@@ -1,4 +1,88 @@
 {
+  "app": {
+    "title": "اکوسیستم",
+    "direction": "rtl"
+  },
+  "navbar": {
+    "langButton": "EN"
+  },
+  "drawer": {
+    "title": "گزارش‌ها",
+    "payments": "پرداخت‌ها",
+    "needs": "نیاز‌ها",
+    "checkpoints": "نقاط عطف",
+    "virtualFamilies": "خانواده مجازی",
+    "children": "کودکان",
+    "smartContracts": "قرارداد‌های هوشمند"
+  },
+  "virtualFamily": {
+    "roles": {
+      "father": "پدر",
+      "mother": "مادر",
+      "amoo": "عمو",
+      "khaleh": "خاله",
+      "daei": "دایی",
+      "amme": "عمه",
+      "amo": "عمو"
+    },
+    "title": "نیازها با چند پرداخت‌کننده",
+    "subheader": "آخرین {{limit}} نیاز که حداقل توسط دو نفر پرداخت شده‌اند",
+    "needFallback": "نیاز شماره {{id}}",
+    "payers": "{{count}} پرداخت‌کننده",
+    "cost": "{{cost}} {{currency}}",
+    "deliveryLabel": "تحویل: {{date}}",
+    "payerCountsTop": "تعداد پرداخت‌کنندگان (بالاترین {{top}})",
+    "topCollaborations": "همکاری‌های برتر",
+    "needLabel": "نیاز شماره {{id}} - {{cost}}",
+    "amountTooltip": "{{amount}}",
+    "currency_toman": "تومان"
+  },
+  "analyticFamily": {
+    "axis": {
+      "peopleCount": "تعداد اعضا",
+      "deliveredSum": "مجموع تحویل‌شده"
+    },
+    "series": "سری",
+    "tooltip": {
+      "member": "عضو",
+      "delivered": "تحویل‌شده",
+      "total": "جمع"
+    },
+    "noData": "داده‌ای برای نمایش وجود ندارد"
+  },
+  "actions": {
+    "refresh": "بارگذاری دوباره",
+    "moreInfo": "اطلاعات بیشتر"
+  },
+  "reports": {
+    "payments": {
+      "heading": "گزارش پرداخت",
+      "summary": "نشانگر: نمودارها و کارت‌های خلاصهٔ فروش."
+    },
+    "needs": {
+      "heading": "گزارش نیازها",
+      "summary": "نیازها بر اساس دسته‌بندی"
+    },
+    "checkpoints": {
+      "heading": "موجودی",
+      "summary": "موجودی کالا و نقطهٔ سفارش مجدد."
+    },
+    "virtualFamilies": {
+      "heading": "خانواده مجازی",
+      "summary": "فعالیت بر اساس نقش"
+    }
+  },
+  "panels": {
+    "kpis": "شاخص‌های کلیدی",
+    "notes": "یادداشت‌ها"
+  },
+  "placeholders": {
+    "paragraph1": "این یک متن نمونه است برای پر کردن فضا و نمایش ساختار طراحی."
+  },
+  "common": {
+    "summaryAndMetrics": "خلاصه و شاخص‌ها برای {{report}}.",
+    "dash": "—"
+  },
   "checkpoint": {
     "publicTitle": "نقاط عطف اخیر",
     "errorMessage": "خطا: {{message}}",
@@ -57,7 +141,7 @@
       "experiment": "آزمایش",
       "support": "پشتیبانی",
       "onboarding": "آغازین",
-      "sales": "فروش",
+      "payments": "فروش",
       "partnerships": "شراکت",
       "incident": "حادثه",
       "monitoring": "پایش",
@@ -72,6 +156,188 @@
       "training": "آموزش",
       "child-joined": "پیوستن",
       "seasonal-report": "گزارش"
+    }
+  },
+  "need": {
+    "waitingNgo": "در انتظار تایید سمن",
+    "waitingPurchase": "در انتظار خرید ...",
+    "purchaseCost": "هزینه نهایی نیاز",
+    "partialPay": "نیم پرداخت",
+    "needAmount": "پرداخت",
+    "refund": "بازپرداخت",
+    "credit": "بازپرداخت",
+    "donation": "توانمند‌سازی SAY",
+    "title": "نیازها",
+    "updatedNeed": "با موفقیت انجام شد!",
+    "autoCompleteType": "خدمات/کالا",
+    "autoCompleteStatus": "وضعیت",
+    "id": "شناسه",
+    "titleEdit": "ویرایش نیاز",
+    "titleAdd": "اضافه کردی نیاز",
+    "titleStatus": "عنوان",
+    "payable": "قابل پرداخت",
+    "unpayable": "غیر قابل پرداخت",
+    "fullyPaid": "پرداخت شده",
+    "update": "ویرایش",
+    "imageUrl": "آیکون",
+    "childSayName": "SAY نام",
+    "name": {
+      "fa": "نام نیاز (fa)",
+      "en": "نام نیاز (en)"
+    },
+    "etitle": "عنوان در فروشگاه",
+    "cost": "قیمت",
+    "expectedDeliveryToNgo": "تخمین زمان رسیدن",
+    "paid": "پرداختی",
+    "progress": "پیشرفت",
+    "status": "وضعیت",
+    "link": "لینک",
+    "affiliateLinkUrl": "لینک همکاری فروش",
+    "type_name": "نوع",
+    "stats": "آمار نیازها",
+    "newStatus": "وضعیت جدید ...",
+    "display": "در حال نمایش",
+    "loadMore": "دریافت نیاز بیشتز",
+    "totalExplain": "لطفا مطلع باشید که این عدد تعداد کل نیازها می‌باشد. تعداد نیازهای ساخته شده به وسیله شما می‌تواند کمتر از کل باشد",
+    "totalCount": "تمام نیازها",
+    "statsRatio": "انجام شده / تمام نیازها",
+    "providerSelect": "لطفا تامین کننده انتخاب کنید",
+    "addProvider": "اضافه کردن تامین کننده",
+    "provider": "اسم تامین کننده",
+    "providers": {
+      "service": "خدمات",
+      "product": "کالا"
+    },
+    "types": {
+      "service": "خدمات",
+      "product": "کالا"
+    },
+    "isUrgent": "ضروری",
+    "informations": "اطلاعات بیشتر",
+    "details": "یادداشت مددکار",
+    "category": "دسته‌بندی",
+    "categories": {
+      "growth": "رشد",
+      "joy": "تفریح",
+      "health": "سلامت",
+      "surroundings": "پیرامون"
+    },
+    "description": "توضیحات",
+    "descriptions": {
+      "fa": "توضیحات فارسی(fa)",
+      "en": "توضیحات انگلیسی(en)"
+    },
+    "img": {
+      "service": "عکس",
+      "product": "عکس از فروشگاه"
+    },
+    "created": "زمان ایجاد",
+    "isConfirmed": "وضعیت تأیید",
+    "socialWorker": "مددکار",
+    "confirmUser": "تأیید کننده",
+    "confirmDate": "زمان تأیید",
+    "updated": "زمان آخرین ویرایش",
+    "doneAt": "زمان اتمام",
+    "child_delivery_date": "زمان انتقال به کودک",
+    "preNeed": "الگو",
+    "doing_duration": "مدت زمان انجام",
+    "payers": "پرداخت کننده‌ها",
+    "button": {
+      "update": "به‌ روزرسانی نیاز",
+      "add": "اضافه کردی نیاز"
+    },
+    "today": "تاریخ امروز",
+    "needStatusTitle": "تغییر وضعیت",
+    "needStatus": {
+      "-1": "تأیید نشده",
+      "0": "پرداخت نشده",
+      "1": "نیم‌پرداخت",
+      "2": "پرداخت کامل",
+      "p3": "کالا خریده شده",
+      "p4": "سمن دریافت کرد",
+      "p5": "به کودک ارسال شده",
+      "s3": "هزینه به سمن واریز شد",
+      "s4": "به کودک ارسال شده",
+      "signature": "امضا",
+      "sign": "امضا",
+      "pending": "به کودک ارسال نشده"
+    },
+    "needDialogue": {
+      "confirm": {
+        "dialogTitle": "نیازهای مشابه"
+      },
+      "service": {
+        "1": "نیم‌پرداخت",
+        "2": "پرداخت کامل",
+        "3": "هزینه به سمن ارسال شده",
+        "4": "به کودک ارسال شده"
+      },
+      "product": {
+        "1": "نیم‌پرداخت",
+        "2": "پرداخت کامل",
+        "3": "کالا خریده شده",
+        "4": "به سمن ارسال شده",
+        "5": "به کودک ارسال شده"
+      }
+    }
+  },
+  "report": {
+    "statusChange": {
+      "expectedDeliveryToNgo": "تاریخ انتظار تحویل کالا به انجمن",
+      "retailerPaid": "هزینه پرداخت شده واقعی",
+      "paid": "هزینه پرداخت شده",
+      "retailerCode": "شماره سفارش",
+      "deliveredToNgo": "تاریخ رسیدن کالا به انجمن",
+      "bankTrackId": "کد پیگیری بانک",
+      "moneyToNgo": "تاریخ دریافت مبلغ",
+      "purchasedCost": "هزینه پرداخت شده واقعی"
+    },
+    "history": {
+      "title": "آنچه گذشت",
+      "status": "وضعیت",
+      "receipt": "رسیدها",
+      "date": "تاریخ"
+    },
+    "swId": "Social worker’s identification: SW-{{socialWorkerGeneratedCode}}",
+    "dkc": "Order: DKC-{{dkc}}",
+    "p2s2": {
+      "img": "https://sayapp.company/public/resources/img/done.jpg",
+      "title": "One of {{childSayName}}’s needs is completely done",
+      "paragraph": "With your collaborations, all expenses for {{needName}} has been paid for on {{date}}."
+    },
+    "p3": {
+      "img": "https://sayapp.company/public/resources/img/purchased.jpg",
+      "title": "Purchase receipt for {{childSayName}}’s needs",
+      "paragraph": "On {{date}} {{needName}} has been ordered for {{childSayName}} from online retailer."
+    },
+    "p4": {
+      "img": "https://sayapp.company/public/resources/img/ngo_delivered.jpg",
+      "title": "Product delivered to the NGO notification",
+      "paragraph": "On {{date}} {{needName}} is delivered to the NGO."
+    },
+    "p5": {
+      "img": "https://sayapp.company/public/resources/img/child_delivered.jpg",
+      "title": "Product delivered to {{childSayName}}",
+      "paragraph": "{{needName}} is delivered to {{childSayName}} on {{date}}."
+    },
+    "s3": {
+      "img": "https://sayapp.company/public/resources/img/money.jpg",
+      "title": "Money transfer to the NGO by SAY",
+      "paragraph": "The amount of {{needCost}} Tomans for purchasing {{childSayName}}’s {{needName}}, has been transferred into the NGO’s bank account, on {{date}}."
+    },
+    "s4": {
+      "img": "https://sayapp.company/public/resources/img/child_delivered.jpg",
+      "title": "{{childSayName}}’s {{needName}} has been paid for",
+      "paragraph": "The amount of {{needCost}} Tomans for {{childSayName}}’s {{needName}}, has been paid by the NGO on {{date}}."
+    },
+    "contact": "At SAY, we listen to you.",
+    "address": "4th Floor, No 22, Azarshahr St, Iranshahr St, Karimkhan Zand St, Tehran, Iran",
+    "phoneNumber": "Tel: <1>0 2 1 - 2 2 3 4 7 8 1 4</1>",
+    "download": "بارگیری",
+    "receipt": {
+      "code": "شماره رسید",
+      "title": "عنوان رسید",
+      "description": "توضیحات"
     }
   }
 }

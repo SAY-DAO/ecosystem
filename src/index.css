@@ -1,23 +1,11 @@
-/* IranYekan Regular */
-@font-face {
-  font-family: "IranYekan";
-  src: url("/iranyekan/IRANYekan.woff2") format("woff2"),
-    url("/iranyekan/IRANYekan.woff") format("woff"),
-    url("/iranyekan/IRANYekan.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+@import url(../public/font/iranyekan/css/fontiran.css);
 
-/* IranYekan Medium/Bold (if available) */
 @font-face {
-  font-family: "IranYekan";
-  src: url("/iranyekan/IRANYekan-Bold.woff2") format("woff2"),
-    url("/iranyekan/IRANYekan-Bold.woff") format("woff"),
-    url("/iranyekan/IRANYekan-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: bold;
-  font-display: swap;
+  font-family: 'Exodar-outline';
+  src: url(../public/font/Exodar/fonts/ttf/Exodar-Outline.ttf)
+    format('truetype');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
 }
 
 html,
@@ -28,5 +16,13 @@ body,
 
 body {
   margin: 0;
-  font-family: "IranYekan", Roboto, Arial, sans-serif;
+  font-family: 'IranYekan', Roboto, Arial, sans-serif;
+}
+
+#main-content {
+  width: 100% !important;
+}
+
+#logo {
+  font-family: Exodar-outline !important;
 }
