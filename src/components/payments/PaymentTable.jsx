@@ -25,9 +25,7 @@ import {
   TableRow,
   TableSortLabel,
   Paper,
-  Tooltip,
   Typography,
-  Grid,
   Collapse,
   CardMedia,
   Link,
@@ -40,6 +38,7 @@ import { dateConvertor, numberConvertor } from '../../utils/persianToEnglish';
 import { fetchTransactions } from '../../features/reportSlice';
 import { NeedTypeEnum, PaymentStatusEnum } from '../../utils/types';
 import { prepareUrl } from '../../utils/helpers';
+import PayerTooltip from './PayerTooltip';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -222,6 +221,13 @@ function EnhancedTableHead(props) {
       numeric: false,
       disablePadding: true,
       label: t('need.refund'),
+      width: '50px',
+    },
+    {
+      id: 'sayContribution',
+      numeric: false,
+      disablePadding: true,
+      label: t('need.sayContribution'),
       width: '50px',
     },
     {
@@ -535,6 +541,7 @@ export default function PaymentTable() {
             }}
           >
             {row.p
+              .filter((a) => a.id_user !== Number(import.meta.env.VITE_SAY_ID))
               .map((p) => Number(p.need_amount))
               .filter((a) => Number.isFinite(a) && a > 0)
               .reduce(
@@ -582,12 +589,21 @@ export default function PaymentTable() {
               )}
             </Typography>
           </TableCell>
-          <TableCell align="center">
-            {row.p.map(
+          <TableCell align="center" sx={{ direction: 'rtl' }}>
+            {row.p.filter(
               (p) => Number(p.credit_amount) && Number(p.credit_amount) < 0,
             )[0] ? (
-              row.p.map((p) => Number(p.credit_amount).toLocaleString())
-            ) : row.status >= 3 ? (
+              row.p
+                .filter(
+                  (p) => Number(p.credit_amount) && Number(p.credit_amount) < 0,
+                )
+                .map((p) => Number(p.credit_amount))
+                .reduce(
+                  (accumulator, currentValue) => accumulator + currentValue,
+                  0,
+                )
+                .toLocaleString()
+            ) : row.status > PaymentStatusEnum.COMPLETE_PAY ? (
               row.p
                 .map((p) => Number(p.need_amount))
                 .reduce((acc, curr) => acc + curr, 0) === row.purchase_cost ? (
@@ -605,8 +621,22 @@ export default function PaymentTable() {
             )}
           </TableCell>
           <TableCell align="center">
+            {row.p
+              .filter((a) => a.id_user === Number(import.meta.env.VITE_SAY_ID))
+              .map((p) => Number(p.need_amount))
+              .filter((a) => Number.isFinite(a) && a > 0)
+              .reduce(
+                (accumulator, currentValue) => accumulator + currentValue,
+                0,
+              )
+              .toLocaleString()}
+          </TableCell>
+          <TableCell align="center">
             {row.p.map(
-              (p) => Number(p.donation_amount) && Number(p.donation_amount),
+              (p) =>
+                Number(p.need_amount) &&
+                Number(p.donation_amount) &&
+                Number(p.donation_amount),
             )
               ? row.p
                   .map(
@@ -693,62 +723,7 @@ export default function PaymentTable() {
                         {row.doneAt ? dateConvertor(row.doneAt) : '-'}
                       </TableCell>
                       <TableCell align="right">
-                        {row.p && row.p[0] && (
-                          <Tooltip
-                            title={row.p.map((p) => {
-                              if (p.verified && p.gateway_track_id) {
-                                return (
-                                  <Grid key={p.id}>
-                                    <Typography
-                                      variant="subtitle2"
-                                      sx={{
-                                        backgroundColor:
-                                          p.need_amount > 0 ? 'green' : 'red',
-                                      }}
-                                    >
-                                      {`User:${p.id_user} Track Id:${p.gateway_track_id} => ${(
-                                        p.need_amount +
-                                        p.donation_amount -
-                                        p.donation_amount -
-                                        p.credit_amount
-                                      ).toLocaleString()}`}
-                                    </Typography>
-                                    <Typography
-                                      variant="subtitle2"
-                                      sx={{
-                                        backgroundColor:
-                                          p.need_amount > 0 ? 'orange' : 'red',
-                                      }}
-                                    >
-                                      {`Donation => ${p.donation_amount.toLocaleString()}`}
-                                    </Typography>
-                                    <Typography
-                                      variant="subtitle2"
-                                      sx={{
-                                        backgroundColor:
-                                          p.need_amount > 0 ? 'orange' : 'red',
-                                      }}
-                                    >
-                                      {`Wallet => ${p.credit_amount.toLocaleString()}`}
-                                    </Typography>
-                                  </Grid>
-                                );
-                              }
-                              return (
-                                <Typography variant="subtitle2" key={p.id}>
-                                  {p.verified &&
-                                    `SAY ${(p.need_amount + p.donation_amount).toLocaleString()}`}
-                                </Typography>
-                              );
-                            })}
-                            placement="top-end"
-                          >
-                            <Typography color="textSecondary" variant="body1">
-                              {row.p.filter((p) => p.verified).length}{' '}
-                              {t('need.payers')}
-                            </Typography>
-                          </Tooltip>
-                        )}
+                        {row.p && row.p[0] && <PayerTooltip row={row}  />}
                       </TableCell>
                     </TableRow>
                     {/* 3 Product delivered to NGO - Money transferred to the NGO */}
