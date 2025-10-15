@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
@@ -7,10 +7,11 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import { Avatar, Chip } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { useTranslation } from 'react-i18next';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 // Simple number formatter
 const formatNumber = (value) => {
@@ -21,6 +22,25 @@ const formatNumber = (value) => {
 export default function PayerTooltip({ row = { p: [] } }) {
   const { t } = useTranslation();
   const payers = Array.isArray(row?.p) ? row.p : [];
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef(null);
+
+  const handleToggle = (event) => {
+    // prevent parent row clicks if needed
+    event.stopPropagation();
+    setOpen((prev) => !prev);
+  };
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      setOpen(false);
+      // keep event from bubbling if you want
+      event.stopPropagation();
+    }
+  };
 
   const CURRENT_USER_ID = Number(import.meta.env.VITE_SAY_ID);
 
@@ -174,40 +194,72 @@ export default function PayerTooltip({ row = { p: [] } }) {
   );
 
   return (
-    <Tooltip
-      title={tooltipContent}
-      placement="top"
-      arrow
-      enterDelay={150}
-      leaveDelay={200}
-      componentsProps={{
-        tooltip: {
-          sx: {
-            p: 0,
-            bgcolor: 'background.paper',
-            color: 'text.primary',
-            boxShadow: 6,
-            borderRadius: 2,
-            border: '1px solid',
-            borderColor: 'divider',
-            maxWidth: 380,
-          },
-        },
-      }}
-    >
-      <span
-        aria-label={`payers-count-${countNeeds}`}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          cursor: 'default',
-        }}
-      >
-        <Typography color="textSecondary" variant="body1" component="span">
-          {countNeeds} {t('need.payers')}
-        </Typography>
-      </span>
-    </Tooltip>
+    <ClickAwayListener onClickAway={() => setOpen(false)}>
+      <div style={{ display: 'inline-flex' }}>
+        <Tooltip
+          title={tooltipContent}
+          placement="top"
+          arrow
+          open={open}
+          onOpen={handleOpen} // hover/focus -> open
+          onClose={handleClose} // mouse leave/blur -> close
+          enterDelay={150}
+          leaveDelay={200}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                p: 0,
+                bgcolor: 'background.paper',
+                color: 'text.primary',
+                boxShadow: 6,
+                borderRadius: 2,
+                border: '1px solid',
+                borderColor: 'divider',
+                maxWidth: 380,
+              },
+            },
+          }}
+        >
+          {/* plain DOM span is safe: MUI will attach handlers here */}
+          <Box
+            component="span"
+            ref={triggerRef}
+            role="button"
+            tabIndex={0}
+            aria-label={`payers-count-${countNeeds}`}
+            onClick={handleToggle}
+            onKeyDown={handleKeyDown}
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 0.5,
+              px: 0.6,
+              py: 0.35,
+              borderRadius: 1,
+              cursor: 'pointer',
+              '&:hover': { bgcolor: 'action.hover' },
+              '&:focus-visible': {
+                outline: (theme) => `2px solid ${theme.palette.primary.main}`,
+                outlineOffset: 2,
+              },
+            }}
+          >
+            <Typography
+              color="textSecondary"
+              variant="body1"
+              component="span"
+              sx={{ fontWeight: 600 }}
+            >
+              {countNeeds} {t('need.payers')}
+            </Typography>
+            <InfoOutlinedIcon
+              fontSize="small"
+              sx={{ color: 'text.secondary', opacity: 0.85 }}
+            />
+          </Box>
+        </Tooltip>
+      </div>
+    </ClickAwayListener>
   );
 }
 

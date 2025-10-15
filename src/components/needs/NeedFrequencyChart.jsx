@@ -169,10 +169,7 @@ export default function NeedCategoryFrequencyChart() {
                 }}
               >
                 <Typography variant="body2" color="text.secondary">
-                  داده‌ای برای نمودار موجود نیست. مطمئن شوید endpoint بک‌اند
-                  <code> /needs-frequency-clustered </code>
-                  داده ارسال می‌کند و reducer آن را در
-                  state.frequency.frequencyData قرار می‌دهد.
+                  داده‌ای برای نمودار موجود نیست.
                 </Typography>
               </Box>
             ) : (
