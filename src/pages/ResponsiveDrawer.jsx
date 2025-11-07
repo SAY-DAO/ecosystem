@@ -33,16 +33,12 @@ import moment from 'moment-jalaali';
 import CircleBackground from '../components/CircleBackground';
 import ThemeToggle from '../components/ThemeToggle';
 import LogoIcon from '../components/LogoIcon';
-import {
-  fetchCheckpoints,
-  fetchSeasonComparison,
-  fetchSummary,
-} from '../features/reportSlice';
+import { fetchSeasonComparison, fetchSummary } from '../features/reportSlice';
 import PaymentLeftPanel from '../components/payments/PaymentLeftPanel';
 import Panel from '../components/Panel';
 import NeedLeftPanel from '../components/needs/NeedLeftPanel';
 import VirtualFamilyLeftPanel from '../components/virtual-families/VirtualFamilyLeftPanel';
-import ChildLeftPanel from '@/components/children/ChildLeftPanel';
+import ChildLeftPanel from '../components/children/ChildLeftPanel';
 
 const drawerWidth = 260;
 const REPORT_IDS = [
@@ -81,7 +77,6 @@ export default function ResponsiveDrawer(props) {
   useEffect(() => {
     dispatch(fetchSummary());
     dispatch(fetchSeasonComparison({ season, includeRates: false }));
-    dispatch(fetchCheckpoints());
   }, []);
 
   useEffect(() => {
@@ -192,6 +187,7 @@ export default function ResponsiveDrawer(props) {
           {translatedReports.map((r) => (
             <ListItem key={r.id} disablePadding>
               <ListItemButton
+                disabled={r.id === 'smartContracts'}
                 onClick={() => handleSelect(r.id)}
                 selected={r.id === selectedId}
                 sx={{

@@ -1,5 +1,13 @@
-// theme.js
 import { createTheme } from '@mui/material/styles';
+import {
+  blue,
+  green,
+  purple,
+  red,
+  yellow,
+  cyan,
+  orange,
+} from '@mui/material/colors';
 
 const basePalette = {
   primary: {
@@ -46,6 +54,19 @@ const basePalette = {
     A100: '#ecf0f2',
     A400: '#767e89',
     A700: '#e6f4ff',
+  },
+  charts: {
+    red: red[200],
+    darkRed: red[800],
+    yellow: yellow[200],
+    lightOrange: orange[200],
+    DarkOrange: orange[800],
+    DarkestOrange: orange[600],
+    green: green[200],
+    darkGreen: green[800],
+    purple: purple[200],
+    blue: blue[200],
+    cyan: cyan[300],
   },
 };
 

@@ -16,7 +16,14 @@
     "smartContracts": "قرارداد‌های هوشمند"
   },
   "virtualFamily": {
+    "tooltip": {
+      "sentence_one": "{{count}} {{name}}  در برطرف کردن {{delivered}}  نیاز نقش داشته است.",
+      "sentence_two": "{{count}} {{name}} هر کدام در برطرف کردن {{delivered}}  نیاز نقش داشته‌اند."
+    },
+    "users": "کاربران ثیت‌نام شده",
+    "description": "{{vMembers}} کاربر حداقل یک نقش فعال در خانواده محازی کودکان دارند",
     "roles": {
+      "title": "نقش‌های فعال",
       "father": "پدر",
       "mother": "مادر",
       "amoo": "عمو",
@@ -36,6 +43,21 @@
     "needLabel": "نیاز شماره {{id}} - {{cost}}",
     "amountTooltip": "{{amount}}",
     "currency_toman": "تومان"
+  },
+  "children": {
+    "title": "کودکان ثبت‌نام شده",
+    "description": "{{vMembers}} کودک حداقل یک عضو در خانواده خود دارند",
+    "tooltip": {
+      "present": "کودکانی که آماده قبول عضو در خانواده مجازی خود هستند",
+      "tempGone": "کودکانی که در حال حاضر تخت پوشش نیستند و امکان بازگشت آنها وجود دارد",
+      "gone": "کودکانی که یا از سن ۱۸ سال بزرگتر هستند یا به دلایلی مانند ترک سمن دیگر تخت پوشش نیستند"
+    },
+    "all": {
+      "confirmed": "تایید شده",
+      "present": "تحت سرپرستی",
+      "tempGone": "ترک موقت",
+      "gone": "ترک کرده"
+    }
   },
   "analyticFamily": {
     "axis": {
@@ -69,11 +91,15 @@
     },
     "virtualFamilies": {
       "heading": "خانواده مجازی",
-      "summary": "فعالیت بر اساس نقش"
+      "summary": "اعضای فعال خانواده تمام کودکان"
+    },
+    "children": {
+      "heading": "کودکان",
+      "summary": "کودکانی که حداقل یک عضو در خانواده خود دارند"
     }
   },
   "panels": {
-    "kpis": "شاخص‌های کلیدی",
+    "children": "وضعیت ثبت‌نام کودکان",
     "notes": "یادداشت‌ها"
   },
   "placeholders": {
@@ -124,19 +150,10 @@
       "code-review": "بازبینی",
       "performance": "بهینه‌سازی",
       "roadmap": "نقشه‌راه",
-      "product-spec": "مشخصات",
       "user-research": "تحقیق",
       "testing": "تست",
       "design": "طراحی",
-      "ux": "تجربه‌کاربر",
-      "branding": "برند",
-      "asset-production": "دارایی‌ها",
       "content": "محتوا",
-      "copywriting": "کپی",
-      "seo": "سئو",
-      "social": "شبکه‌اجتماعی",
-      "email": "ایمیل",
-      "paid-ads": "تبلیغات",
       "campaign": "کمپین",
       "experiment": "آزمایش",
       "support": "پشتیبانی",
@@ -154,13 +171,18 @@
       "hr": "منابع‌انسانی",
       "meeting": "جلسه",
       "training": "آموزش",
-      "child-joined": "پیوستن",
-      "seasonal-report": "گزارش"
+      "child-left": "ترک",
+      "registered": "پیوستن کودک",
+      "ngo-joined": "همکاری",
+      "report": "گزارش ماهانه"
     }
   },
   "need": {
+    "delivered": "تعداد نیازهای ارسال شده",
+    "payableNeeds": "نیاز قابل پرداخت",
     "waitingNgo": "در انتظار تایید سمن",
     "waitingPurchase": "در انتظار خرید ...",
+    "waitingPayment": "در انتظار پرداخت ...",
     "purchaseCost": "هزینه نهایی نیاز",
     "partialPay": "نیم پرداخت",
     "needAmount": "پرداخت",

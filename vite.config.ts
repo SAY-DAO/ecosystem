@@ -12,5 +12,7 @@ export default defineConfig({
     },
   },
   plugins: [react(), tsconfigPaths()],
-  // other config...
+  optimizeDeps: {
+    include: ['react-window'],
+  },
 });

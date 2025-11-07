@@ -8,15 +8,24 @@ import {
   Autocomplete,
   TextField,
   Skeleton,
+  Grid,
+  Tooltip,
 } from '@mui/material';
 import { useSelector, shallowEqual } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Panel from '../Panel';
 import Comparison from '../Comparison';
+import { childrenNetworkSelectors } from '../../features/childrenSlice';
+import ChildrenNgosCard from './ChildrenNgosCard';
 
 function ChildLeftPanel({ season, setSeason, options = [] }) {
   const { t, i18n } = useTranslation();
   const [inputValue, setInputValue] = useState('');
+
+  const networks = useSelector((state) =>
+    childrenNetworkSelectors.selectAll(state),
+  );
+  const networkStatus = useSelector((state) => state.childrenNetwork.status);
 
   // single selector for fewer re-renders
   const { seasonComparison, loadingSummary, summary } = useSelector(
@@ -105,28 +114,11 @@ function ChildLeftPanel({ season, setSeason, options = [] }) {
     [seasonComparison],
   );
 
-  const totals = useMemo(() => {
-    const {
-      totalUsers = null,
-      totalNeeds = null,
-      totalPayments = null,
-      totalDoneNeeds = null,
-      totalChildren = null,
-    } = summary || {};
-    return {
-      totalUsers,
-      totalNeeds,
-      totalPayments,
-      totalDoneNeeds,
-      totalChildren,
-    };
-  }, [summary]);
-
   const isRtl = i18n.language === 'fa';
 
   return (
     <Box>
-      <Panel title={t('panels.kpis', 'KPIs')} align={!isRtl ? 'right' : 'left'}>
+      <Panel title={t('panels.children', 'KPIs')} align={!isRtl ? 'right' : 'left'}>
         <Card sx={{ mt: 1 }}>
           <CardContent>
             <Comparison data={comparisonData} season={season} />
@@ -143,9 +135,9 @@ function ChildLeftPanel({ season, setSeason, options = [] }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder={t('placeholders.searchSeason', 'Type to filter')}
                   variant="outlined"
                   size="small"
+                  label={season ? ` ${season}  - ${season - 1}` : 'انتخاب سال'}
                 />
               )}
               sx={{ mb: 2 }}
@@ -160,18 +152,18 @@ function ChildLeftPanel({ season, setSeason, options = [] }) {
           <Card>
             <CardContent>
               <Typography variant="subtitle2" color="text.secondary">
-                {t('panels.doneNeeds', 'نیازهای تکمیل‌شده')}
+                {t('children.title')}
               </Typography>
 
               {loadingSummary ? (
                 <Skeleton width={100} height={36} />
               ) : (
                 <Typography variant="h5" sx={{ mt: 1 }}>
-                  {totals.totalChildren ?? '—'}
+                  {summary.children ? summary.children.confirmed : '—'}
                 </Typography>
               )}
 
-              {loadingSummary ? (
+              {loadingSummary || networkStatus !== 'succeeded' ? (
                 <Skeleton width={100} height={20} />
               ) : (
                 <Typography
@@ -179,12 +171,114 @@ function ChildLeftPanel({ season, setSeason, options = [] }) {
                   variant="body1"
                   color="text.secondary"
                 >
-                  {String(totals.totalChildren ?? '—')}{' '}
-                  {t('panels.payableNeeds', 'نیاز قابل پرداخت')}
+                  {t('children.description', { vMembers: networks.length })}
                 </Typography>
               )}
             </CardContent>
           </Card>
+
+          <Card sx={{ mt: 2 }}>
+            {/* Tooltip needs a single child element */}
+            <CardContent>
+              {summary.children && (
+                <Grid
+                  container
+                  direction="row"
+                  sx={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  spacing={3}
+                >
+                  {/* 2) Per-stat tooltip: wrap the content in a block element (Box) */}
+                  <Grid item xs={4} sx={{ textAlign: 'center' }}>
+                    <Tooltip
+                      title={t(
+                        'children.tooltip.present',
+                        'Number of children currently present',
+                      )}
+                      arrow
+                      placement="top"
+                    >
+                      <Box>
+                        <Typography
+                          variant="body1"
+                          color="text.primary"
+                          sx={{ fontSize: 14 }}
+                        >
+                          {summary.children.alivePresent}
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="text.secondary"
+                          sx={{ fontSize: 10 }}
+                        >
+                          {t('children.all.present')}
+                        </Typography>
+                      </Box>
+                    </Tooltip>
+                  </Grid>
+
+                  <Grid item xs={4} sx={{ textAlign: 'center' }}>
+                    <Tooltip
+                      title={t(
+                        'children.tooltip.tempGone',
+                        'Children temporarily away',
+                      )}
+                      arrow
+                      placement="top"
+                    >
+                      <Box>
+                        <Typography
+                          variant="body1"
+                          color="text.primary"
+                          sx={{ fontSize: 14 }}
+                        >
+                          {summary.children.tempGone}
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="text.secondary"
+                          sx={{ fontSize: 10 }}
+                        >
+                          {t('children.all.tempGone')}
+                        </Typography>
+                      </Box>
+                    </Tooltip>
+                  </Grid>
+
+                  <Grid item xs={4} sx={{ textAlign: 'center' }}>
+                    <Tooltip
+                      title={t(
+                        'children.tooltip.gone',
+                        'Children no longer present (alive gone + deceased)',
+                      )}
+                      arrow
+                      placement="top"
+                    >
+                      <Box>
+                        <Typography
+                          variant="body1"
+                          color="text.primary"
+                          sx={{ fontSize: 14 }}
+                        >
+                          {summary.children.aliveGone + summary.children.dead}
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="text.secondary"
+                          sx={{ fontSize: 10 }}
+                        >
+                          {t('children.all.gone')}
+                        </Typography>
+                      </Box>
+                    </Tooltip>
+                  </Grid>
+                </Grid>
+              )}
+            </CardContent>
+          </Card>
+          <ChildrenNgosCard ngos={summary.ngos} />
         </Panel>
       </Box>
     </Box>

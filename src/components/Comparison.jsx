@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import {
   ResponsiveContainer,
   BarChart,
@@ -16,7 +16,6 @@ import {
 import { Typography } from '@mui/material';
 import moment from 'moment-jalaali';
 import { useTheme } from '@mui/material/styles';
-import { fetchSeasonComparison } from '../features/reportSlice';
 
 const farsiMonthMap = {
   فروردین: 0,
@@ -32,13 +31,10 @@ const farsiMonthMap = {
   بهمن: 10,
   اسفند: 11,
 };
-// Make sure to load moment-jalaali plugin
 moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: false });
 
-// add this above the Comparison component
-function CustomTooltip({ active, payload, label }) {
+function CustomTooltip({ active, payload, label, season }) {
   if (!active || !payload || !payload.length) return null;
-  // payload[0] corresponds to the bar's payload; the original object is in payload[0].payload
   const entry = payload[0].payload || {};
   const current = Number(entry.current || 0);
   const previous = Number(entry.previous || 0);
@@ -62,15 +58,23 @@ function CustomTooltip({ active, payload, label }) {
     minWidth: 160,
     fontSize: 13,
   };
-  const labelStyle = { color: '#fff', fontWeight: 600, marginBottom: 6 };
-  const rowStyle = { color: '#ddd', marginBottom: 6 };
+  const labelStyle = { color: '#fff', fontWeight: 800, marginBottom: 6 };
+  const rowStyle = { color: '#ddd', marginBottom: 6, fontSize: 10 };
 
   return (
     <div style={containerStyle}>
       <div style={labelStyle}>{label}</div>
-      <div style={rowStyle}>Current: {current.toLocaleString()}</div>
-      <div style={rowStyle}>Previous: {previous.toLocaleString()}</div>
-      <div style={{ color: '#ddd' }}>Change: {changeText}</div>
+      <div style={rowStyle}>
+        {current.toLocaleString()}{' '}
+        <strong style={{ fontWeight: 600 }}>: {season} سال </strong>
+      </div>
+      <div style={rowStyle}>
+        {previous.toLocaleString()}{' '}
+        <strong style={{ fontWeight: 600 }}>: {season - 1} سال </strong>
+      </div>
+      <div style={{ color: '#ddd' }}>
+        {changeText} <strong style={{ fontWeight: 600 }}>:تغییر</strong>
+      </div>
     </div>
   );
 }
@@ -147,13 +151,11 @@ function computeYDomainForCounts(data) {
     .map((d) => Number(d.current || 0))
     .filter((v) => Number.isFinite(v));
 
-    
   // fallback when no numeric data
   if (values.length === 0) return [0, 10];
 
   const min = Math.min(...values);
   const max = Math.max(...values);
-
 
   // if all values are identical, give a symmetric pad so chart is visible
   if (min === max) {
@@ -191,14 +193,8 @@ export default function Comparison({
   reduxSelector = selectSeasonComparison,
   season,
 }) {
-  const dispatch = useDispatch();
   const theme = useTheme();
   const reduxData = useSelector(reduxSelector);
-
-  // initial load
-  useEffect(() => {
-    dispatch(fetchSeasonComparison({ season, includeRates: false }));
-  }, [season]);
 
   const raw = useMemo(() => {
     if (Array.isArray(propData) && propData.length) return propData;
@@ -260,7 +256,7 @@ export default function Comparison({
           </Typography>
         </div>
       </div>
-      <div style={{ height: 260 }}>
+      <div style={{ height: 260, marginBottom: 20 }}>
         {hasData ? (
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -273,14 +269,25 @@ export default function Comparison({
               }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#E6E9EE" />
-              <XAxis dataKey="period" tick={{ fontSize: 8 }} />
+              <XAxis
+                dataKey="period"
+                label={{
+                  value: `${season} - مقایسه ماهانه  ${season - 1}`,
+                  position: 'insideBottom',
+                  offset: -15,
+                  fontSize: 12,
+                }}
+                tick={{ fontSize: 8 }}
+              />
+
               <YAxis
                 // counting axis (left)
                 domain={yDomain}
-                width={48}
-                tick={{ fontSize: 12 }}
+                // width={65}
+                tick={{ fontSize: 10 }}
+                tickFormatter={(i) => i.toLocaleString()}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip season={season} />} />
               <ReferenceLine y={0} stroke="#94A3B8" strokeDasharray="3 3" />
               <Bar dataKey="current" minPointSize={4} radius={[6, 6, 6, 6]}>
                 {data.map((entry, idx) => (

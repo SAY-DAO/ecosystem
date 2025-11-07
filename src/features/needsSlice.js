@@ -2,20 +2,39 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../api/axios';
 
-// Simple JS version of the needs slice (same behavior as the TS slice).
 const initialState = {
-  items: [],
+  // deliveredNeeds is an object now to hold list + pagination meta
+  deliveredNeeds: {
+    delivered: [],
+    count: 0,
+    page: 1,
+    limit: 10,
+  },
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
 };
 
-export const fetchMultiPayerNeeds = createAsyncThunk(
-  'needs/fetchMultiPayerNeeds',
-  async (limit = 100) => {
-    const res = await api.get(
-      `/api/dao/analytic/public/multi-payers?limit=${limit}`,
-    );
-    return res.data; // expect array of Need objects
+export const fetchDeliveredNeeds = createAsyncThunk(
+  'needs/fetchDeliveredNeeds',
+  // accept object: { needType, page, limit }
+  async ({ needType, page = 1, limit = 10 }, { rejectWithValue }) => {
+    try {
+      const res = await api.get(
+        `/api/dao/analytic/public/needs/delivered/${needType}?page=${page}&limit=${limit}`,
+      );
+      // Expect response shape: { delivered: [...], count: number }
+      return {
+        delivered: res.data.delivered ?? [],
+        count: typeof res.data.count === 'number' ? res.data.count : 0,
+        page,
+        limit,
+      };
+    } catch (err) {
+      // try to return a friendly message
+      const message =
+        err?.response?.data?.message || err?.message || 'Failed to load needs';
+      return rejectWithValue(message);
+    }
   },
 );
 
@@ -24,27 +43,43 @@ const needsSlice = createSlice({
   initialState,
   reducers: {
     clearNeeds(state) {
-      state.items = [];
+      state.deliveredNeeds = {
+        delivered: [],
+        count: 0,
+        page: 1,
+        limit: 10,
+      };
       state.status = 'idle';
       state.error = null;
+    },
+    // optional: allow setting page from the UI without refetching
+    setNeedsPage(state, action) {
+      state.deliveredNeeds.page = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMultiPayerNeeds.pending, (state) => {
+      .addCase(fetchDeliveredNeeds.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(fetchMultiPayerNeeds.fulfilled, (state, action) => {
+      .addCase(fetchDeliveredNeeds.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = action.payload;
+        state.deliveredNeeds = {
+          delivered: action.payload.delivered,
+          count: action.payload.count,
+          page: action.payload.page,
+          limit: action.payload.limit,
+        };
       })
-      .addCase(fetchMultiPayerNeeds.rejected, (state, action) => {
+      .addCase(fetchDeliveredNeeds.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error?.message || 'Failed to load needs';
+        // if we used rejectWithValue, payload is available in action.payload
+        state.error =
+          action.payload || action.error?.message || 'Failed to load needs';
       });
   },
 });
 
-export const { clearNeeds } = needsSlice.actions;
+export const { clearNeeds, setNeedsPage } = needsSlice.actions;
 export default needsSlice.reducer;

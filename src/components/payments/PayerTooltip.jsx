@@ -12,6 +12,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { useTranslation } from 'react-i18next';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { dateConvertor } from '../../utils/persianToEnglish';
 
 // Simple number formatter
 const formatNumber = (value) => {
@@ -78,6 +79,7 @@ export default function PayerTooltip({ row = { p: [] } }) {
         // keep a stable representative id if you had one per payment
         reprId: p.id ?? `${uid}-${String(p.gateway_track_id || '')}`,
         need_amount: need,
+        payCreated: p.created,
         donation_amount: donation,
         credit_amount: credit,
         gateway_track_present: p.gateway_track_id,
@@ -98,6 +100,7 @@ export default function PayerTooltip({ row = { p: [] } }) {
   const countNeeds = verifiedDisplay.filter(
     (u) => Number(u.need_amount) > 0,
   ).length;
+console.log(verifiedDisplay);
 
   const tooltipContent = (
     <Box sx={{ p: 1 }}>
@@ -146,6 +149,12 @@ export default function PayerTooltip({ row = { p: [] } }) {
                             sx={{ height: 26 }}
                           />
                         ) : null}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        sx={{ mr: 0.5, display: 'flex', alignItems: 'center' }}
+                      >
+                        {dateConvertor(u.payCreated)}
                       </Typography>
                     </Stack>
 

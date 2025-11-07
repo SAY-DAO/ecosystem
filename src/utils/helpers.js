@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function prepareUrl(imageUrl) {
   let url;
   if (imageUrl && imageUrl.startsWith('/')) {
@@ -47,3 +49,12 @@ export function parseNumberLoose(v) {
   const n = Number(s);
   return Number.isFinite(n) ? n : 0;
 }
+
+export const daysDifference = (later, earlier) => {
+  if (!later || !earlier) return null;
+  const a = moment(later);
+  const b = moment(earlier);
+  if (!a.isValid() || !b.isValid()) return null;
+  const d = a.diff(b, 'days');
+  return Number.isFinite(d) ? d : null;
+};

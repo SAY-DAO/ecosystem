@@ -17,11 +17,11 @@ export const fetchFamilyAnalytic = createAsyncThunk(
       },
     };
 
-    const res = await api.get(`/api/dao/analytic/public/multi-payers`, {
+    const res = await api.get(`/api/dao/analytic/public/family/scattered`, {
       signal: thunkAPI.signal,
       config,
     });
-    return res.data; // payload shape: whatever your API returns
+    return res.data;
   },
 );
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -19,8 +19,10 @@ import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
 import { dateConvertor } from '../../utils/persianToEnglish';
 import { getChipStyle, getChipSxFromBase } from '../../utils/chipStyle';
+import { fetchCheckpoints } from '../../features/reportSlice';
 
 export default function CheckpointLog() {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
@@ -30,6 +32,11 @@ export default function CheckpointLog() {
   const error = useSelector((s) => s.report && s.report.error);
 
   const [openId, setOpenId] = useState(null);
+
+  // initial load
+  useEffect(() => {
+    dispatch(fetchCheckpoints());
+  }, []);
 
   function formatDate(val) {
     if (!val) return '';
@@ -82,7 +89,7 @@ export default function CheckpointLog() {
         role="region"
         aria-label={t('checkpoint.listAria')}
         sx={{
-          height: 360,
+          height: 560,
           overflowY: 'auto',
           overflowX: 'hidden',
           bgcolor: 'transparent',
@@ -133,7 +140,7 @@ export default function CheckpointLog() {
                         <Typography
                           sx={{
                             fontWeight: 300,
-                            fontSize: 12,
+                            fontSize: 10,
                             minWidth: 0,
                             maxWidth: '100%',
                           }}
@@ -154,7 +161,7 @@ export default function CheckpointLog() {
                             sx={getChipSxFromBase(chipStyle.bg, {
                               bgAlpha: !isDark ? 0.06 : 0.4,
                               borderAlpha: !isDark ? 0.44 : 1,
-                              forceTextColor: 'text.primary'
+                              // forceTextColor: chipStyle.color,
                             })}
                           />
                         ) : (
@@ -180,7 +187,7 @@ export default function CheckpointLog() {
                             display: 'block',
                             whiteSpace: 'nowrap',
                             fontWeight: 200,
-                            fontSize: 10,
+                            fontSize: 8,
                           }}
                         >
                           {formatDate(it.checkPointDate || it.checkpointDate)}
@@ -222,8 +229,13 @@ export default function CheckpointLog() {
                       <Box sx={{ mt: 1, pr: 1 }}>
                         {it.description && (
                           <Typography
-                            variant="body2"
-                            sx={{ whiteSpace: 'pre-wrap', mb: it.url ? 1 : 0 }}
+                            variant="subtitle2"
+                            sx={{
+                              whiteSpace: 'pre-wrap',
+                              mb: it.url ? 1 : 0,
+                              color: 'text.secondary',
+                              fontSize: 12,
+                            }}
                           >
                             {it.description}
                           </Typography>

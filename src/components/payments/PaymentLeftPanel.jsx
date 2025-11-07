@@ -174,9 +174,9 @@ function PaymentLeftPanel({ season, setSeason, options = [] }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder={t('placeholders.searchSeason', 'Type to filter')}
                   variant="outlined"
                   size="small"
+                  label={season ? ` ${season}  - ${season - 1}` : 'انتخاب سال'}
                 />
               )}
               sx={{ mb: 2 }}

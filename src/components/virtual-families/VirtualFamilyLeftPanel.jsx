@@ -8,6 +8,7 @@ import {
   Autocomplete,
   TextField,
   Skeleton,
+  Grid,
 } from '@mui/material';
 import { useSelector, shallowEqual } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -105,6 +106,7 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
       totalPayments = null,
       totalDoneNeeds = null,
       totalChildren = null,
+      roleCounts = null,
     } = summary || {};
     return {
       totalUsers,
@@ -112,6 +114,7 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
       totalPayments,
       totalDoneNeeds,
       totalChildren,
+      roleCounts,
     };
   }, [summary]);
 
@@ -154,9 +157,9 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder={t('placeholders.searchSeason', 'Type to filter')}
                   variant="outlined"
                   size="small"
+                  label={season ? ` ${season}  - ${season - 1}` : 'انتخاب سال'}
                 />
               )}
               sx={{ mb: 2 }}
@@ -170,7 +173,7 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
           <Card>
             <CardContent>
               <Typography variant="subtitle2" color="text.secondary">
-                {t('panels.virtualFamily', 'خانواده مجازی')}
+                {t('virtualFamily.users')}
               </Typography>
 
               {loadingSummary ? (
@@ -181,16 +184,142 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                 </Typography>
               )}
 
-              <Typography
-                sx={{ fontSize: 10 }}
-                variant="body2"
-                color="text.secondary"
-              >
-                {t(
-                  'panels.virtualFamilyDescription',
-                  'تعداد اعضای خانواده‌های مجازی',
-                )}
+              {!summary || !summary.rolesCount ? (
+                <Skeleton width={100} height={20} />
+              ) : (
+                <Typography
+                  sx={{ fontSize: 10 }}
+                  variant="body1"
+                  color="text.secondary"
+                >
+                  {t('virtualFamily.description', {
+                    vMembers:
+                      summary.rolesCount.mothersCount +
+                      summary.rolesCount.fathersCount +
+                      summary.rolesCount.amoosCount +
+                      summary.rolesCount.khalehsCount +
+                      summary.rolesCount.daeisCount +
+                      summary.rolesCount.ammesCount,
+                  })}
+                </Typography>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card sx={{ mt: 2 }}>
+            <CardContent>
+              <Typography variant="subtitle2" color="text.secondary">
+                {t('virtualFamily.roles.title')}
               </Typography>
+              {summary.rolesCount && (
+                <Grid
+                  container
+                  direction="row"
+                  sx={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    pt: 1,
+                  }}
+                  spacing={3}
+                >
+                  <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('virtualFamily.roles.mother')}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {summary.rolesCount.mothersCount}
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('virtualFamily.roles.father')}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {summary.rolesCount.fathersCount}
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('virtualFamily.roles.amoo')}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {summary.rolesCount.amoosCount}
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('virtualFamily.roles.khaleh')}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {summary.rolesCount.khalehsCount}
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('virtualFamily.roles.daei')}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {summary.rolesCount.daeisCount}
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('virtualFamily.roles.amme')}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {summary.rolesCount.ammesCount}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
             </CardContent>
           </Card>
         </Panel>

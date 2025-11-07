@@ -15,10 +15,6 @@ const normalizeAxiosError = (err) => {
   return String(err);
 };
 
-/* ============================
-   Async Thunks (non-frequency)
-   ============================ */
-
 export const fetchSummary = createAsyncThunk(
   'report/fetchSummary',
   async (_, thunkAPI) => {

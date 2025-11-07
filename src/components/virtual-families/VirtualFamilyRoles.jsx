@@ -110,8 +110,8 @@ export default function VirtualFamilyRoles({
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    if (!roles) dispatch(fetchFamilyAnalytic());
-  }, [roles, dispatch]);
+    dispatch(fetchFamilyAnalytic());
+  }, [dispatch]);
 
   // Build series payload + per-series stats (memoized)
   const seriesPayload = useMemo(() => {
@@ -266,6 +266,23 @@ export default function VirtualFamilyRoles({
           const delivered = point.delivered ?? point.x ?? '-';
           const people = point.people ?? point.y ?? '-';
 
+          // raw values
+          const deliveredRaw = point.delivered ?? point.x;
+          const peopleRaw = point.people ?? point.y;
+
+          // numeric conversion (safe)
+          const deliveredNum = Number(deliveredRaw);
+          const peopleNum = Number(peopleRaw);
+          const hasDelivered = Number.isFinite(deliveredNum);
+          const hasPeople = Number.isFinite(peopleNum);
+
+          // compute total only when both are valid numbers
+          const totalNum =
+            hasDelivered && hasPeople ? peopleNum * deliveredNum : null;
+
+          // formatting helper (keeps your fmt)
+          const f = (v) => (v == null ? '-' : fmt(v));
+
           return `
             <div style="padding:12px; font-size:13px;background: #2f2f2f;">
               <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
@@ -285,6 +302,23 @@ export default function VirtualFamilyRoles({
                   <div style="color:#ffff; font-size:11px;">${t('analyticFamily.tooltip.total')}</div>
                   <div style="color:#ffff; font-weight:700; font-size:14px;">${fmt(people * delivered)}</div>
                 </div>
+              </div>
+                <div style="direction:rtl">
+                  ${
+                    people > 1
+                      ? t('virtualFamily.tooltip.sentence_two', {
+                          count: peopleNum,
+                          name,
+                          delivered: f(deliveredNum),
+                          total: f(totalNum),
+                        })
+                      : t('virtualFamily.tooltip.sentence_one', {
+                          count: peopleNum,
+                          name,
+                          delivered: f(deliveredNum),
+                          total: f(totalNum),
+                        })
+                  } 
               </div>
             </div>
           `;

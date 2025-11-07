@@ -108,14 +108,14 @@ function NeedLeftPanel({ season, setSeason, options = [] }) {
   const totals = useMemo(() => {
     const {
       totalUsers = null,
-      totalNeeds = null,
+      totalNotDoneNeeds = null,
       totalPayments = null,
       totalDoneNeeds = null,
       totalChildren = null,
     } = summary || {};
     return {
       totalUsers,
-      totalNeeds,
+      totalNotDoneNeeds,
       totalPayments,
       totalDoneNeeds,
       totalChildren,
@@ -143,9 +143,9 @@ function NeedLeftPanel({ season, setSeason, options = [] }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder={t('placeholders.searchSeason', 'Type to filter')}
                   variant="outlined"
                   size="small"
+                  label={season ? ` ${season}  - ${season - 1}` : 'انتخاب سال'}
                 />
               )}
               sx={{ mb: 2 }}
@@ -160,7 +160,7 @@ function NeedLeftPanel({ season, setSeason, options = [] }) {
           <Card>
             <CardContent>
               <Typography variant="subtitle2" color="text.secondary">
-                {t('panels.doneNeeds', 'نیازهای تکمیل‌شده')}
+                {t('need.delivered')}
               </Typography>
 
               {loadingSummary ? (
@@ -179,8 +179,7 @@ function NeedLeftPanel({ season, setSeason, options = [] }) {
                   variant="body1"
                   color="text.secondary"
                 >
-                  {String(totals.totalNeeds ?? '—')}{' '}
-                  {t('panels.payableNeeds', 'نیاز قابل پرداخت')}
+                  {String(totals.totalNotDoneNeeds ?? '—')} {t('need.payableNeeds')}
                 </Typography>
               )}
             </CardContent>

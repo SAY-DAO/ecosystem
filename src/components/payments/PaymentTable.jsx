@@ -23,7 +23,6 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TableSortLabel,
   Paper,
   Typography,
   Collapse,
@@ -36,7 +35,11 @@ import { useTranslation } from 'react-i18next';
 import { visuallyHidden } from '@mui/utils';
 import { dateConvertor, numberConvertor } from '../../utils/persianToEnglish';
 import { fetchTransactions } from '../../features/reportSlice';
-import { NeedTypeEnum, PaymentStatusEnum } from '../../utils/types';
+import {
+  NeedTypeEnum,
+  PaymentStatusEnum,
+  ProductStatusEnum,
+} from '../../utils/types';
 import { prepareUrl } from '../../utils/helpers';
 import PayerTooltip from './PayerTooltip';
 
@@ -168,71 +171,68 @@ function EnhancedTableHead(props) {
   const { t, i18n } = useTranslation();
 
   const [headCells, setHeadCells] = useState();
-  const { order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
+  const { order, orderBy } = props;
 
   const headCellsProduct = [
     {
       id: '#',
       numeric: false,
-      disablePadding: false,
+      disablePadding: true,
       label: '',
       width: '50px',
     },
     {
       id: 'id',
-      numeric: false,
-      disablePadding: false,
+      numeric: true,
+      disablePadding: true,
       label: t('need.id'),
       width: '50px',
     },
     {
       id: 'img',
       numeric: false,
-      disablePadding: false,
+      disablePadding: true,
       label: t('need.img.product'),
       width: '50px',
     },
     {
       id: '_cost',
-      numeric: false,
+      numeric: true,
       disablePadding: true,
       label: t('need.cost'),
-      width: '120px',
+      width: '100px',
     },
     {
       id: 'purchase_cost',
-      numeric: false,
+      numeric: true,
       disablePadding: true,
       label: t('need.purchaseCost'),
       width: '120px',
     },
     {
       id: 'need_amount',
-      numeric: false,
+      numeric: true,
       disablePadding: true,
       label: t('need.needAmount'),
       width: '50px',
     },
     {
       id: 'refund',
-      numeric: false,
+      numeric: true,
       disablePadding: true,
       label: t('need.refund'),
       width: '50px',
     },
     {
       id: 'sayContribution',
-      numeric: false,
+      numeric: true,
       disablePadding: true,
       label: t('need.sayContribution'),
       width: '50px',
     },
     {
       id: 'donation',
-      numeric: false,
+      numeric: true,
       disablePadding: true,
       label: t('need.donation'),
       width: '120px',
@@ -252,14 +252,9 @@ function EnhancedTableHead(props) {
               key={headCell.id}
               align="center"
               padding={headCell.disablePadding ? 'none' : 'normal'}
-              sortDirection={orderBy === headCell.id ? order : false}
               sx={{ minWidth: headCell.width }}
             >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : 'asc'}
-                onClick={createSortHandler(headCell.id)}
-              >
+              <>
                 <Typography
                   variant="subtitle1"
                   fontWeight="500"
@@ -274,7 +269,7 @@ function EnhancedTableHead(props) {
                       : 'sorted ascending'}
                   </Box>
                 ) : null}
-              </TableSortLabel>
+              </>
             </TableCell>
           ))}
       </TableRow>
@@ -283,7 +278,6 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
 };
@@ -387,74 +381,39 @@ export default function PaymentTable() {
     return transactions.data.slice(start, start + rowsPerPage);
   }, [transactions, page, rowsPerPage]);
 
-  function ImageComponent({ row }) {
-    const [isImageValid, setIsImageValid] = useState(null); // null = not checked yet, true = valid, false = invalid
-
-    // Function to check image validity
-    const checkImage = async (url) => {
-      try {
-        const response = await fetch(url, { method: 'HEAD' });
-        if (response.ok) {
-          setIsImageValid(true);
-        } else {
-          setIsImageValid(false);
-        }
-      } catch (error) {
-        setIsImageValid(false);
-        console.log(error);
-      }
-    };
-
-    // Check the image validity once when row.img or row.imageUrl changes
-    useEffect(() => {
-      if (row.img) {
-        checkImage(row.img); // Check the main image
-      } else {
-        checkImage(prepareUrl(row.imageUrl)); // Fallback image check
-      }
-    }, [row.img, row.imageUrl]);
-
-    // If isImageValid is null, it means the image is still being checked
-    if (isImageValid === null) {
-      return (
-        <Skeleton
-          sx={{
-            borderRadius: '10px',
-            height: '50px',
-            width: '50px',
-          }}
-        />
-      );
-    }
-
-    return (
-      <CardMedia
-        component="img"
-        image={
-          isImageValid
-            ? row.img || prepareUrl(row.imageUrl)
-            : prepareUrl(row.imageUrl)
-        }
-        alt={
-          row.name_translation
-            ? row.name_translation.en
-            : prepareUrl(row.imageUrl)
-        }
-        sx={{
-          borderRadius: '10px',
-          height: '50px',
-          width: '50px',
-        }}
-      />
-    );
-  }
-
   function Row(props) {
     const { i18n } = useTranslation();
 
     const { row } = props;
 
     const [accOpen, setAccOpen] = useState(false);
+
+    const theCost = row.purchase_cost && row.purchase_cost;
+
+    const payAmount = row.p
+      .filter((a) => a.id_user !== Number(import.meta.env.VITE_SAY_ID))
+      .map((p) => Number(p.need_amount))
+      .filter((a) => Number.isFinite(a) && a > 0)
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+    const credit =
+      row.p.filter(
+        (p) => Number(p.credit_amount) && Number(p.credit_amount) < 0,
+      )[0] &&
+      row.p
+        .filter((p) => Number(p.credit_amount) && Number(p.credit_amount) < 0)
+        .map((p) => Number(p.credit_amount))
+        .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+    const sayPay = row.p
+      .filter((a) => a.id_user === Number(import.meta.env.VITE_SAY_ID))
+      .map((p) => Number(p.need_amount))
+      .filter((a) => Number.isFinite(a) && a > 0)
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+    const sayEmpower = row.p
+      .map((p) => Number(p.donation_amount) && Number(p.donation_amount))
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
     return (
       <>
@@ -475,7 +434,11 @@ export default function PaymentTable() {
           </TableCell>
           <TableCell
             sx={{
-              color: (th) => th.palette.text.secondary,
+              color: (th) =>
+                theCost / payAmount < 1.5
+                  ? th.palette.text.secondary
+                  : row.child_delivery_date !== null && 'red',
+              fontSize: 12,
             }}
             component="th"
             scope="row"
@@ -485,7 +448,24 @@ export default function PaymentTable() {
           <TableCell align="center">
             <Box display="flex" alignItems="center">
               <Link href={row.link} target="_blank">
-                <ImageComponent row={row} />
+                <CardMedia
+                  component="img"
+                  image={
+                    row.img && row.img
+                      ? row.img
+                      : row.imageUrl && prepareUrl(row.imageUrl)
+                  }
+                  alt={
+                    row.name_translation
+                      ? row.name_translation.en
+                      : prepareUrl(row.imageUrl)
+                  }
+                  sx={{
+                    borderRadius: '10px',
+                    height: '50px',
+                    width: '50px',
+                  }}
+                />
               </Link>
               <Box
                 sx={{
@@ -516,39 +496,30 @@ export default function PaymentTable() {
               color: () => theme.palette.text.secondary,
             }}
           >
-            {row.purchase_cost ? (
-              row.purchase_cost.toLocaleString()
-            ) : row.status >= PaymentStatusEnum.COMPLETE_PAY ? (
-              <Typography
-                sx={{ fontSize: 9, textAlign: 'center' }}
-                fontWeight="400"
-              >
-                <br />
-                {t('need.waitingPurchase')}
-              </Typography>
-            ) : (
-              <Typography
-                sx={{ fontSize: 9, textAlign: 'center' }}
-                fontWeight="400"
-              >
-                {t('need.waitingPurchase')}
-              </Typography>
-            )}
+            {(theCost && theCost.toLocaleString()) ||
+              (row.status >= PaymentStatusEnum.COMPLETE_PAY ? (
+                <Typography
+                  sx={{ fontSize: 9, textAlign: 'center' }}
+                  fontWeight="400"
+                >
+                  <br />
+                  {t('need.waitingPurchase')}
+                </Typography>
+              ) : (
+                <Typography
+                  sx={{ fontSize: 9, textAlign: 'center' }}
+                  fontWeight="400"
+                >
+                  {t('need.waitingPayment')}
+                </Typography>
+              ))}
           </TableCell>
           <TableCell
             sx={{
               color: () => theme.palette.text.secondary,
             }}
           >
-            {row.p
-              .filter((a) => a.id_user !== Number(import.meta.env.VITE_SAY_ID))
-              .map((p) => Number(p.need_amount))
-              .filter((a) => Number.isFinite(a) && a > 0)
-              .reduce(
-                (accumulator, currentValue) => accumulator + currentValue,
-                0,
-              )
-              .toLocaleString()}
+            {payAmount && payAmount.toLocaleString()}
             <Typography sx={{ fontSize: 9 }} fontWeight="400">
               {row.status < PaymentStatusEnum.COMPLETE_PAY && (
                 <>
@@ -590,65 +561,43 @@ export default function PaymentTable() {
             </Typography>
           </TableCell>
           <TableCell align="center" sx={{ direction: 'rtl' }}>
-            {row.p.filter(
-              (p) => Number(p.credit_amount) && Number(p.credit_amount) < 0,
-            )[0] ? (
-              row.p
-                .filter(
-                  (p) => Number(p.credit_amount) && Number(p.credit_amount) < 0,
+            {(credit && credit.toLocaleString()) ||
+              (row.status > PaymentStatusEnum.COMPLETE_PAY ? (
+                payAmount <= theCost ? (
+                  '-'
+                ) : (
+                  <Typography
+                    sx={{ fontSize: 9, textAlign: 'center' }}
+                    fontWeight="400"
+                  >
+                    {t('need.waitingNgo')}
+                  </Typography>
                 )
-                .map((p) => Number(p.credit_amount))
-                .reduce(
-                  (accumulator, currentValue) => accumulator + currentValue,
-                  0,
-                )
-                .toLocaleString()
-            ) : row.status > PaymentStatusEnum.COMPLETE_PAY ? (
-              row.p
-                .map((p) => Number(p.need_amount))
-                .reduce((acc, curr) => acc + curr, 0) === row.purchase_cost ? (
-                '-'
               ) : (
-                <Typography
-                  sx={{ fontSize: 9, textAlign: 'center' }}
-                  fontWeight="400"
-                >
-                  {t('need.waitingNgo')}
-                </Typography>
-              )
-            ) : (
+                '-'
+              ))}
+          </TableCell>
+          {/* SAY contribution */}
+          <TableCell align="center">
+            {row.type === NeedTypeEnum.PRODUCT &&
+            row.status >= PaymentStatusEnum.COMPLETE_PAY &&
+            row.status >= ProductStatusEnum.DELIVERED_TO_NGO &&
+            payAmount < theCost ? (
+              sayPay.toLocaleString()
+            ) : row.type === NeedTypeEnum.SERVICE || payAmount >= theCost ? (
               '-'
+            ) : (
+              <Typography
+                sx={{ fontSize: 9, textAlign: 'center' }}
+                fontWeight="400"
+              >
+                {t('need.waitingNgo')}
+              </Typography>
             )}
           </TableCell>
+          {/* Say empower */}
           <TableCell align="center">
-            {row.p
-              .filter((a) => a.id_user === Number(import.meta.env.VITE_SAY_ID))
-              .map((p) => Number(p.need_amount))
-              .filter((a) => Number.isFinite(a) && a > 0)
-              .reduce(
-                (accumulator, currentValue) => accumulator + currentValue,
-                0,
-              )
-              .toLocaleString()}
-          </TableCell>
-          <TableCell align="center">
-            {row.p.map(
-              (p) =>
-                Number(p.need_amount) &&
-                Number(p.donation_amount) &&
-                Number(p.donation_amount),
-            )
-              ? row.p
-                  .map(
-                    (p) =>
-                      Number(p.donation_amount) && Number(p.donation_amount),
-                  )
-                  .reduce(
-                    (accumulator, currentValue) => accumulator + currentValue,
-                    0,
-                  )
-                  .toLocaleString()
-              : '-'}
+            {sayEmpower ? sayEmpower.toLocaleString() : '-'}
           </TableCell>
         </TableRow>
         <TableRow>
@@ -675,35 +624,51 @@ export default function PaymentTable() {
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={{ fontWeight: 600 }}>
+                      <TableCell sx={{ fontWeight: 600, width: '100px' }}>
                         {t('report.history.status')}
                       </TableCell>
-                      <TableCell sx={{ fontWeight: 600 }}>
+                      <TableCell sx={{ fontWeight: 600, width: '100px' }}>
                         {t('report.history.date')}
                       </TableCell>
-                      <TableCell align="right" sx={{ fontWeight: 600 }}>
+                      <TableCell sx={{ fontWeight: 600, width: '100px' }}>
                         {t('report.history.receipt')}
                       </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12, fontWeight: 600 }}
+                      >
                         {t('need.created')}
                       </TableCell>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12 }}
+                      >
                         {row.created ? dateConvertor(row.created) : '-'}
                       </TableCell>
-                      <TableCell align="right"> - </TableCell>
+                      <TableCell> - </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12, fontWeight: 600 }}
+                      >
                         {t('need.confirmDate')}
                       </TableCell>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12 }}
+                      >
                         {row.confirmDate ? dateConvertor(row.confirmDate) : '-'}
                       </TableCell>
-                      <TableCell align="right">-</TableCell>
+                      <TableCell>-</TableCell>
                     </TableRow>
                     {/* <TableRow>
                       <TableCell component="th" scope="row">
@@ -712,28 +677,44 @@ export default function PaymentTable() {
                       <TableCell component="th" scope="row">
                         {row.updated ? dateConvertor(row.updated) : '-'}
                       </TableCell>
-                      <TableCell align="right">-</TableCell>
+                      <TableCell>-</TableCell>
                     </TableRow> */}
                     {/* 2   Complete payment	*/}
                     <TableRow>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12, fontWeight: 600 }}
+                      >
                         {t('need.needStatus.2')}
                       </TableCell>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12 }}
+                      >
                         {row.doneAt ? dateConvertor(row.doneAt) : '-'}
                       </TableCell>
-                      <TableCell align="right">
-                        {row.p && row.p[0] && <PayerTooltip row={row}  />}
+                      <TableCell sx={{ fontSize: 12 }}>
+                        {row.p && row.p[0] && <PayerTooltip row={row} />}
                       </TableCell>
                     </TableRow>
                     {/* 3 Product delivered to NGO - Money transferred to the NGO */}
                     <TableRow>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12, fontWeight: 600 }}
+                      >
                         {row.type === NeedTypeEnum.PRODUCT
                           ? t('need.needStatus.p3')
                           : t('need.needStatus.s3')}
                       </TableCell>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12 }}
+                      >
                         {row.type === NeedTypeEnum.PRODUCT && row.purchase_date
                           ? dateConvertor(row.purchase_date)
                           : row.type === NeedTypeEnum.SERVICE &&
@@ -741,7 +722,7 @@ export default function PaymentTable() {
                             ? dateConvertor(row.ngo_delivery_date)
                             : '-'}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell sx={{ fontSize: 12 }}>
                         {row.deliveryCode &&
                           parseInt(numberConvertor(row.deliveryCode), 10)
                             .toLocaleString('en-US')
@@ -754,12 +735,20 @@ export default function PaymentTable() {
                     </TableRow>
                     {/* 4 Product delivered to NGO - service delivery to child */}
                     <TableRow>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12, fontWeight: 600 }}
+                      >
                         {row.type === NeedTypeEnum.PRODUCT
                           ? t('need.needStatus.p4')
                           : t('need.needStatus.s4')}
                       </TableCell>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ fontSize: 12 }}
+                      >
                         {row.type === NeedTypeEnum.PRODUCT &&
                         row.ngo_delivery_date
                           ? dateConvertor(row.ngo_delivery_date)
@@ -778,10 +767,18 @@ export default function PaymentTable() {
                     {/* 5 product delivery to child */}
                     {row.type === NeedTypeEnum.PRODUCT && (
                       <TableRow>
-                        <TableCell component="th" scope="row">
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          sx={{ fontSize: 12, fontWeight: 600 }}
+                        >
                           {t('need.needStatus.p5')}
                         </TableCell>
-                        <TableCell component="th" scope="row">
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          sx={{ fontSize: 12 }}
+                        >
                           {row.child_delivery_date
                             ? dateConvertor(row.child_delivery_date)
                             : '-'}
@@ -836,7 +833,31 @@ export default function PaymentTable() {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+    <TableContainer
+      component={Paper}
+      sx={{
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'rgba(0,0,0,0.22) transparent',
+
+        '&::WebkitScrollbar': {
+          width: 8,
+          height: 8, // horizontal thickness
+        },
+        '&::WebkitScrollbarThumb': {
+          background: 'rgba(0,0,0,0.22)',
+          borderRadius: '999px',
+          minHeight: 24,
+          minWidth: 24,
+          border: '2px solid transparent',
+          backgroundClip: 'padding-box',
+        },
+        '&::WebkitScrollbarTrack': {
+          background: 'transparent',
+        },
+      }}
+    >
       {loadingTransactions ? (
         <Skeleton width="100%" height={600} />
       ) : (

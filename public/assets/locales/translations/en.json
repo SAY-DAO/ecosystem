@@ -22,7 +22,14 @@
     }
   },
   "virtualFamily": {
+    "tooltip": {
+      "sentence_one": "{{count}} {{name}} delivered {{delivered}} — total {{total}}.",
+      "sentence_two": "{{count}} {{name}}s delivered {{delivered}} — total {{total}}."
+    },
+    "description": "{{vMembers}} users have at least one role in children's virtual families",
+    "users": "Registered users",
     "roles": {
+      "title": "Active roles",
       "father": "Father",
       "mother": "Mother",
       "amoo": "Amoo",
@@ -42,6 +49,21 @@
     "needLabel": "Need #{{id}} - {{cost}}",
     "amountTooltip": "{{amount}}",
     "currency_toman": "Toman"
+  },
+  "children": {
+    "title": "Registered children",
+    "description": "{{vMembers}} children has at least one member in their family.",
+    "tooltip": {
+      "present": "Children who are ready to accept a member into their virtual family",
+      "tempGone": "Children who are currently not under care but may return",
+      "gone": "Children who are no longer under care — either because they are over 18 or for reasons such as leaving the NGO"
+    },
+    "all": {
+      "confirmed": "Confirmed",
+      "present": "Present",
+      "tempGone": "TempGone",
+      "gone": "Gone"
+    }
   },
   "analyticFamily": {
     "axis": {
@@ -76,6 +98,14 @@
     "users": {
       "heading": "Users",
       "summary": "Active users and cohorts."
+    },
+    "virtualFamilies": {
+      "heading": "Virtual Families",
+      "summary": "Active users and cohorts."
+    },
+    "children": {
+      "heading": "Children",
+      "summary": "Active Children."
     }
   },
   "panels": {
@@ -130,19 +160,10 @@
       "code-review": "Review",
       "performance": "Perf",
       "roadmap": "Roadmap",
-      "product-spec": "Spec",
       "user-research": "Research",
       "testing": "Testing",
       "design": "Design",
-      "ux": "UX",
-      "branding": "Brand",
-      "asset-production": "Assets",
       "content": "Content",
-      "copywriting": "Copy",
-      "seo": "SEO",
-      "social": "Social",
-      "email": "Email",
-      "paid-ads": "Ads",
       "campaign": "Campaign",
       "experiment": "Experiment",
       "support": "Support",
@@ -160,13 +181,18 @@
       "hr": "HR",
       "meeting": "Meeting",
       "training": "Training",
-      "child-joined": "Joined",
-      "seasonal-report": "Report"
+      "child-left": "Left",
+      "registered": "Child Registered",
+      "ngo-joined": "Joined",
+      "report": "Monthly Report"
     }
   },
   "need": {
+    "delivered": "Delivered needs",
+    "payableNeeds": "Available need to be paid",
     "waitingNgo": "Waiting Ngo confirmation",
     "waitingPurchase": "Waiting for purchase ...",
+    "waitingPayment": "Waiting for payment ...",
     "partialPay": "Partial Pay",
     "purchaseCost": "Purchase cost",
     "needAmount": "Paid",
