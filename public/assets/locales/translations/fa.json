@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "اکوسیستم",
-    "direction": "rtl"
+    "rowsPerPage": "ردیف در هر صفحه",
+    "currency_toman": "تومان"
   },
   "navbar": {
     "langButton": "EN"
@@ -41,8 +42,7 @@
     "payerCountsTop": "تعداد پرداخت‌کنندگان (بالاترین {{top}})",
     "topCollaborations": "همکاری‌های برتر",
     "needLabel": "نیاز شماره {{id}} - {{cost}}",
-    "amountTooltip": "{{amount}}",
-    "currency_toman": "تومان"
+    "amountTooltip": "{{amount}}"
   },
   "children": {
     "title": "کودکان ثبت‌نام شده",
@@ -78,12 +78,12 @@
   },
   "reports": {
     "payments": {
-      "heading": "گزارش پرداخت",
-      "summary": "نشانگر: نمودارها و کارت‌های خلاصهٔ فروش."
+      "heading": "گزارش پرداخت‌ها",
+      "summary": "آخرین تراکنش‌های مالی"
     },
     "needs": {
       "heading": "گزارش نیازها",
-      "summary": "نیازها بر اساس دسته‌بندی"
+      "summary": "جزییات زمان‌بندی نیازها"
     },
     "checkpoints": {
       "heading": "موجودی",
@@ -99,6 +99,11 @@
     }
   },
   "panels": {
+    "totalPaymentsDescription": "مجموع هزینه پرداخت شده برای تمام نیازها",
+    "totalPayments": "مجموع پرداخت‌ها",
+    "payments": "وضعیت تراکنش‌ها",
+    "needs": "وضعیت نیازهای رفع شده",
+    "virtualFamilies": "وضعیت ثبت‌نام خانواده‌های مجازی",
     "children": "وضعیت ثبت‌نام کودکان",
     "notes": "یادداشت‌ها"
   },
@@ -304,6 +309,32 @@
         "4": "به سمن ارسال شده",
         "5": "به کودک ارسال شده"
       }
+    },
+    "timeLines": {
+      "chart": {
+        "noData": "داده‌ای برای نمایش وجود ندارد",
+        "days": "روز"
+      },
+      "filter": {
+        "needTypeLabel": "نوع نیاز",
+        "product": "کالا",
+        "service": "خدمات"
+      },
+      "pagination": {
+        "ariaLabel": "صفحه‌بندی نمودار زمان‌بندی نیازها"
+      },
+      "timeline": {
+        "series": {
+          "registerToConfirm": "ثبت تا تایید",
+          "confirmToPay": "تایید تا پرداخت",
+          "payToPurchase": "پرداخت تا خرید کالا",
+          "purchaseToNgo": "خرید تا دریافت در سمن",
+          "ngoToChild": "دریافت در سمن تا رسیدن به کودک",
+          "total": "مجموع",
+          "payToService": "واریز تا دریافت خدمات",
+          "documentFromNgo": "ارائه سند از سمن"
+        }
+      }
     }
   },
   "report": {
@@ -363,6 +394,20 @@
       "code": "شماره رسید",
       "title": "عنوان رسید",
       "description": "توضیحات"
+    }
+  },
+  "comparison": {
+    "chart": {
+      "xAxisLabel": "{{season}} - مقایسه ماهانه {{prevSeason}}",
+      "noData": "داده‌ای موجود نیست"
+    },
+    "tooltip": {
+      "year": "سال {{season}}",
+      "change": "تغییر"
+    },
+    "kpi": {
+      "totalInYear": "مجموع {{count}} در سال {{season}}",
+      "totalInPrevYear": "مجموع {{count}} در سال {{season}}"
     }
   }
 }

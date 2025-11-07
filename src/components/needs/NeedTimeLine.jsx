@@ -11,6 +11,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import Chart from 'react-apexcharts';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { fetchDeliveredNeeds } from '../../features/needsSlice';
 import { NeedTypeEnum } from '../../utils/types';
 import { daysDifference } from '../../utils/helpers';
@@ -19,6 +20,8 @@ function NeedTimeLine() {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+
+  const { t, i18n } = useTranslation(); // <<-- requested
 
   const [page, setPage] = useState(1);
   const [needType, setNeedType] = useState(NeedTypeEnum.PRODUCT);
@@ -64,7 +67,15 @@ function NeedTimeLine() {
   ];
 
   const chartValues = useMemo(() => {
-    const categories = delivered.map((n) => n.name_translations?.fa ?? '—');
+    const localeKey =
+      i18n &&
+      typeof i18n.language === 'string' &&
+      i18n.language.startsWith('fa')
+        ? 'fa'
+        : 'en';
+    const categories = delivered.map(
+      (n) => n.name_translations?.[localeKey] ?? '—',
+    );
 
     // create -> confirm
     const s1 = delivered.map((n) => daysDifference(n.confirmDate, n.created));
@@ -76,7 +87,6 @@ function NeedTimeLine() {
     const s3 = delivered.map((n) => daysDifference(n.purchase_date, n.doneAt));
 
     //  retailer delivery/transfer -> NGO received
-    // ngo_delivery_date for service is updated via status_event when status changes to 3 / backend / need_model.py
     const s4 = delivered.map((n) =>
       n.type === NeedTypeEnum.PRODUCT
         ? daysDifference(n.ngo_delivery_date, n.purchase_date)
@@ -111,34 +121,28 @@ function NeedTimeLine() {
     const seriesTimeLine =
       needType === NeedTypeEnum.PRODUCT
         ? [
-            { name: 'ثبت تا تایید', data: paddedSeries[0] },
-            { name: 'تایید تا پرداخت', data: paddedSeries[1] },
             {
-              name: needType === NeedTypeEnum.PRODUCT && 'پرداخت تا خرید کالا',
-              data: paddedSeries[2],
+              name: t('need.timeLines.timeline.series.registerToConfirm'),
+              data: paddedSeries[0],
             },
-            {
-              name: 'خرید تا دریافت کالا',
-              data: paddedSeries[3],
-            },
-            {
-              name: 'کودک دریافت کرد',
-              data: paddedSeries[4],
-            },
-            { name: 'مجموع', data: paddedSeries[5] },
+            { name: t('need.timeLines.timeline.series.confirmToPay'), data: paddedSeries[1] },
+            { name: t('need.timeLines.timeline.series.payToPurchase'), data: paddedSeries[2] },
+            { name: t('need.timeLines.timeline.series.purchaseToNgo'), data: paddedSeries[3] },
+            { name: t('need.timeLines.timeline.series.ngoToChild'), data: paddedSeries[4] },
+            { name: t('need.timeLines.timeline.series.total'), data: paddedSeries[5] },
           ]
         : [
-            { name: 'ثبت تا تایید', data: paddedSeries[0] },
-            { name: 'تایید تا پرداخت', data: paddedSeries[1] },
             {
-              name: 'واریز تا دریافت خدمات',
-              data: paddedSeries[2],
+              name: t('need.timeLines.timeline.series.registerToConfirm'),
+              data: paddedSeries[0],
             },
+            { name: t('need.timeLines.timeline.series.confirmToPay'), data: paddedSeries[1] },
+            { name: t('need.timeLines.timeline.series.payToService'), data: paddedSeries[2] },
             {
-              name: 'ارائه سند از سمن',
+              name: t('need.timeLines.timeline.series.documentFromNgo'),
               data: paddedSeries[3],
             },
-            { name: 'مجموع', data: paddedSeries[4] },
+            { name: t('need.timeLines.timeline.series.total'), data: paddedSeries[4] },
           ];
 
     const optionsTimeLine = {
@@ -151,7 +155,7 @@ function NeedTimeLine() {
         background: '#0b1220',
       },
 
-      noData: { text: 'داده‌ای برای نمایش وجود ندارد' },
+      noData: { text: t('chart.noData') },
       xaxis: {
         categories,
         labels: {
@@ -165,7 +169,9 @@ function NeedTimeLine() {
       tooltip: {
         y: {
           formatter: (val) =>
-            val === null || val === undefined ? '—' : `${val} روز`,
+            val === null || val === undefined
+              ? '—'
+              : `${val} ${t('need.timeLines.chart.days')}`,
         },
       },
       yaxis: {
@@ -183,7 +189,7 @@ function NeedTimeLine() {
     };
 
     return { optionsTimeLine, seriesTimeLine };
-  }, [delivered, page, chartColors, isDark]);
+  }, [delivered, page, chartColors, isDark, needType, t, i18n]);
 
   const chartKey = useMemo(() => {
     const ids = delivered.map((d) => d.id).join('_') || 'empty';
@@ -221,7 +227,12 @@ function NeedTimeLine() {
             series={chartValues.seriesTimeLine}
             type="line"
             height="560"
-            style={{ direction: 'ltr' }}
+            style={{
+              direction:
+                i18n && i18n.language && i18n.language.startsWith('fa')
+                  ? 'rtl'
+                  : 'ltr',
+            }}
           />
         </div>
       </Grid>
@@ -231,16 +242,22 @@ function NeedTimeLine() {
         sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
       >
         <FormControl sx={{ width: '100%', maxWidth: 360 }} size="small">
-          <InputLabel id="need-type-label">نوع نیاز</InputLabel>
+          <InputLabel id="need-type-label">
+            {t('need.timeLines.filter.needTypeLabel')}
+          </InputLabel>
           <Select
             labelId="need-type-label"
             id="need-type-select"
             value={needType}
-            label="نوع نیاز"
+            label={t('need.timeLines.filter.needTypeLabel')}
             onChange={handleTypeChange}
           >
-            <MenuItem value={NeedTypeEnum.PRODUCT}>کالا (Product)</MenuItem>
-            <MenuItem value={NeedTypeEnum.SERVICE}>خدمات (Service)</MenuItem>
+            <MenuItem value={NeedTypeEnum.PRODUCT}>
+              {t('need.timeLines.filter.product')}
+            </MenuItem>
+            <MenuItem value={NeedTypeEnum.SERVICE}>
+              {t('need.timeLines.filter.service')}
+            </MenuItem>
           </Select>
         </FormControl>
       </Grid>
@@ -258,6 +275,7 @@ function NeedTimeLine() {
           onChange={handleChange}
           variant="outlined"
           color="primary"
+          aria-label={t('pagination.ariaLabel')}
         />
       </Grid>
     </Grid>

@@ -157,7 +157,7 @@ function PaymentLeftPanel({ season, setSeason, options = [] }) {
 
   return (
     <Box>
-      <Panel title={t('panels.kpis', 'KPIs')} align={!isRtl ? 'right' : 'left'}>
+      <Panel title={t('panels.payments')} align={!isRtl ? 'right' : 'left'}>
         <Card sx={{ mt: 1 }}>
           <CardContent>
             <Comparison data={paysData} season={season} />
@@ -191,7 +191,7 @@ function PaymentLeftPanel({ season, setSeason, options = [] }) {
           <Card>
             <CardContent>
               <Typography variant="subtitle2" color="text.secondary">
-                {t('panels.totalPayments', 'مجموع پرداخت‌ها')}
+                {t('panels.totalPayments')}
               </Typography>
 
               {loadingSummary ? (
@@ -203,7 +203,7 @@ function PaymentLeftPanel({ season, setSeason, options = [] }) {
                     component="span"
                     sx={{ fontSize: 12, color: 'text.secondary' }}
                   >
-                    {t('currency.toman', 'تومان')}
+                    {t('app.currency_toman')}
                   </Typography>
                 </Typography>
               )}
@@ -213,10 +213,7 @@ function PaymentLeftPanel({ season, setSeason, options = [] }) {
                 variant="body2"
                 color="text.secondary"
               >
-                {t(
-                  'panels.totalPaymentsDescription',
-                  'مجموع هزینه پرداخت شده برای تمام نیازها',
-                )}
+                {t('panels.totalPaymentsDescription')}
               </Typography>
             </CardContent>
           </Card>

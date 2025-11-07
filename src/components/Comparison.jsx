@@ -16,6 +16,9 @@ import {
 import { Typography } from '@mui/material';
 import moment from 'moment-jalaali';
 import { useTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
+
+moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: false });
 
 const farsiMonthMap = {
   فروردین: 0,
@@ -31,9 +34,36 @@ const farsiMonthMap = {
   بهمن: 10,
   اسفند: 11,
 };
-moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: false });
+
+// english month names (short / long variants that might appear in data)
+const englishMonthMap = {
+  January: 0,
+  Jan: 0,
+  February: 1,
+  Feb: 1,
+  March: 2,
+  Mar: 2,
+  April: 3,
+  Apr: 3,
+  May: 4,
+  June: 5,
+  Jun: 5,
+  July: 6,
+  Jul: 6,
+  August: 7,
+  Aug: 7,
+  September: 8,
+  Sep: 8,
+  October: 9,
+  Oct: 9,
+  November: 10,
+  Nov: 10,
+  December: 11,
+  Dec: 11,
+};
 
 function CustomTooltip({ active, payload, label, season }) {
+  const { t } = useTranslation();
   if (!active || !payload || !payload.length) return null;
   const entry = payload[0].payload || {};
   const current = Number(entry.current || 0);
@@ -66,14 +96,21 @@ function CustomTooltip({ active, payload, label, season }) {
       <div style={labelStyle}>{label}</div>
       <div style={rowStyle}>
         {current.toLocaleString()}{' '}
-        <strong style={{ fontWeight: 600 }}>: {season} سال </strong>
+        <strong style={{ fontWeight: 600 }}>
+          : {t('comparison.tooltip.year', { season })}
+        </strong>
       </div>
       <div style={rowStyle}>
         {previous.toLocaleString()}{' '}
-        <strong style={{ fontWeight: 600 }}>: {season - 1} سال </strong>
+        <strong style={{ fontWeight: 600 }}>
+          : {t('comparison.tooltip.year', { season: season - 1 })}
+        </strong>
       </div>
       <div style={{ color: '#ddd' }}>
-        {changeText} <strong style={{ fontWeight: 600 }}>:تغییر</strong>
+        {changeText}{' '}
+        <strong style={{ fontWeight: 600 }}>
+          : {t('comparison.tooltip.change')}
+        </strong>
       </div>
     </div>
   );
@@ -90,31 +127,20 @@ export function normalizeRateData(rawInput) {
     if (previous === 0) {
       isNew = current > 0;
       if (current === 0) {
-        // both zero -> no change
         rate = 0;
       } else {
-        // previous 0, current > 0 -> semantic "infinite" change.
-        // keep rate = null (means "new") but create a numeric displayRate below
         rate = null;
       }
     } else {
       rate = ((current - previous) / previous) * 100;
     }
 
-    // displayRate is what the chart actually plots (must be numeric)
-    // - use the real rate when finite
-    // - use 0 when both are zero
-    // - use a reasonable sentinel when "new" (previous === 0 && current > 0)
-    //   you can choose the sentinel value; 100 is common (means +100%) but
-    //   adjust if it doesn't fit your UX.
     let displayRate;
     if (typeof rate === 'number' && Number.isFinite(rate)) {
       displayRate = rate;
     } else if (previous === 0 && current > 0) {
-      // sentinel value for "new" — choose what makes sense for your UI.
       displayRate = 100;
     } else {
-      // both zero -> 0
       displayRate = 0;
     }
 
@@ -122,7 +148,7 @@ export function normalizeRateData(rawInput) {
       period: (d && (d.period ?? d.label)) || '-',
       previous,
       current,
-      rate, // keep original semantic value (may be null)
+      rate,
       isNew,
       displayRate,
     };
@@ -151,23 +177,19 @@ function computeYDomainForCounts(data) {
     .map((d) => Number(d.current || 0))
     .filter((v) => Number.isFinite(v));
 
-  // fallback when no numeric data
   if (values.length === 0) return [0, 10];
 
   const min = Math.min(...values);
   const max = Math.max(...values);
 
-  // if all values are identical, give a symmetric pad so chart is visible
   if (min === max) {
     const base = Math.abs(max);
     const pad = Math.max(1, Math.ceil(base * 0.1));
-    // ensure lower bound can go below zero if min is negative, otherwise floor to 0
     const lower = Math.floor(min - pad);
     const upper = Math.ceil(max + pad);
     return [lower, upper];
   }
 
-  // normal case: compute 10% padding of the range (at least 1)
   const range = max - min;
   const pad = Math.max(1, Math.ceil(range * 0.1));
   const lower = Math.floor(min - pad);
@@ -194,6 +216,9 @@ export default function Comparison({
   season,
 }) {
   const theme = useTheme();
+  const { i18n } = useTranslation(); // <-- requested: use this for locale-sensitive behaviour
+  const { t } = useTranslation();
+
   const reduxData = useSelector(reduxSelector);
 
   const raw = useMemo(() => {
@@ -205,18 +230,25 @@ export default function Comparison({
   const data = useMemo(() => {
     const currentJalaliYear = moment().jYear();
     const currentJalaliMonth = moment().jMonth();
-    // Convert season Gregorian year to Jalali year using mid-year date
     const seasonJalaliYear = moment(`${season}-06-01`, 'YYYY-MM-DD').jYear();
     const normalized = normalizeRateData(raw);
+
+    // choose month lookup map depending on locale
+    const localeIsFa =
+      i18n &&
+      typeof i18n.language === 'string' &&
+      i18n.language.startsWith('fa');
+    const monthMap = localeIsFa ? farsiMonthMap : englishMonthMap;
+
     if (seasonJalaliYear === currentJalaliYear) {
       return normalized.filter((entry) => {
         const monthName = entry.period?.trim();
-        const monthIndex = farsiMonthMap[monthName];
+        const monthIndex = monthMap[monthName];
         return monthIndex != null && monthIndex <= currentJalaliMonth;
       });
     }
     return normalized;
-  }, [raw, season]);
+  }, [raw, season, i18n]);
 
   const seasonKPI = useMemo(() => computeSeasonKPI(data), [data]);
   const yDomain = useMemo(() => computeYDomainForCounts(data), [data]);
@@ -224,18 +256,29 @@ export default function Comparison({
   const barColor = (rate, isNew) => {
     if (isNew) return theme.palette.grey.A400;
     if (rate == null) return theme.palette.grey.A400;
-    return rate >= 0 ? theme.palette.success.main : theme.palette.danger.main;
+    const danger =
+      (theme.palette && theme.palette.danger && theme.palette.danger.main) ||
+      theme.palette.error.main;
+    return rate >= 0 ? theme.palette.success.main : danger;
   };
 
   const hasData = data.some((d) => d.previous !== 0 || d.current !== 0);
+  const isRtl = i18n.language === 'fa';
 
   return (
     <div
-      style={{ textAlign: 'center', direction: 'ltr' }}
+      style={{
+        textAlign: 'center',
+        direction: isRtl ? 'rtl' : 'ltr',
+      }}
       className="w-full max-w-3xl bg-white/80 dark:bg-slate-900/70 rounded-2xl p-4 shadow-sm"
     >
       <div className="flex items-start justify-between gap-4 mb-3">
-        <div className="text-right">
+        <div
+          style={{
+            textAlign: 'center',
+          }}
+        >
           <Typography
             variant="h5"
             fontWeight={500}
@@ -248,14 +291,21 @@ export default function Comparison({
                 : 0}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            مجموع {seasonKPI.currTotal.toLocaleString()} در سال {season}
+            {t('comparison.kpi.totalInYear', {
+              count: seasonKPI.currTotal.toLocaleString(),
+              season,
+            })}
           </Typography>
           <br />
           <Typography variant="caption" color="text.secondary">
-            مجموع {seasonKPI.prevTotal.toLocaleString()} در سال {season - 1}
+            {t('comparison.kpi.totalInPrevYear', {
+              count: seasonKPI.prevTotal.toLocaleString(),
+              season: season - 1,
+            })}
           </Typography>
         </div>
       </div>
+
       <div style={{ height: 260, marginBottom: 20 }}>
         {hasData ? (
           <ResponsiveContainer width="100%" height="100%">
@@ -272,7 +322,10 @@ export default function Comparison({
               <XAxis
                 dataKey="period"
                 label={{
-                  value: `${season} - مقایسه ماهانه  ${season - 1}`,
+                  value: t('comparison.chart.xAxisLabel', {
+                    season,
+                    prevSeason: season - 1,
+                  }),
                   position: 'insideBottom',
                   offset: -15,
                   fontSize: 12,
@@ -281,9 +334,7 @@ export default function Comparison({
               />
 
               <YAxis
-                // counting axis (left)
                 domain={yDomain}
-                // width={65}
                 tick={{ fontSize: 10 }}
                 tickFormatter={(i) => i.toLocaleString()}
               />
@@ -301,7 +352,7 @@ export default function Comparison({
           </ResponsiveContainer>
         ) : (
           <div className="h-full flex items-center justify-center text-sm text-slate-500">
-            No data available
+            {t('comparison.chart.noData')}
           </div>
         )}
       </div>

@@ -44,8 +44,10 @@ import { prepareUrl } from '../../utils/helpers';
 import PayerTooltip from './PayerTooltip';
 
 function TablePaginationActions(props) {
-  const theme = useTheme();
+  const { i18n } = useTranslation();
   const { count, page, rowsPerPage, onPageChange } = props;
+
+  const isRtl = i18n.language === 'fa';
 
   const handleFirstPageButtonClick = (event) => {
     const newPage = 0;
@@ -76,18 +78,14 @@ function TablePaginationActions(props) {
         disabled={page === 0}
         aria-label="first page"
       >
-        {theme.direction !== 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+        {!isRtl ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
       <IconButton
         onClick={handleBackButtonClick}
         disabled={page === 0}
         aria-label="previous page"
       >
-        {theme.direction !== 'rtl' ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
+        {!isRtl ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
@@ -96,11 +94,7 @@ function TablePaginationActions(props) {
         }
         aria-label="next page"
       >
-        {theme.direction !== 'rtl' ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
+        {!isRtl ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
       <IconButton
         onClick={handleLastPageButtonClick}
@@ -109,7 +103,7 @@ function TablePaginationActions(props) {
         }
         aria-label="last page"
       >
-        {theme.direction !== 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+        {!isRtl ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </Box>
   );
@@ -177,63 +171,63 @@ function EnhancedTableHead(props) {
     {
       id: '#',
       numeric: false,
-      disablePadding: true,
+      disablePadding: false,
       label: '',
       width: '50px',
     },
     {
       id: 'id',
       numeric: true,
-      disablePadding: true,
+      disablePadding: false,
       label: t('need.id'),
       width: '50px',
     },
     {
       id: 'img',
       numeric: false,
-      disablePadding: true,
+      disablePadding: false,
       label: t('need.img.product'),
       width: '50px',
     },
     {
       id: '_cost',
       numeric: true,
-      disablePadding: true,
+      disablePadding: false,
       label: t('need.cost'),
       width: '100px',
     },
     {
       id: 'purchase_cost',
       numeric: true,
-      disablePadding: true,
+      disablePadding: false,
       label: t('need.purchaseCost'),
       width: '120px',
     },
     {
       id: 'need_amount',
       numeric: true,
-      disablePadding: true,
+      disablePadding: false,
       label: t('need.needAmount'),
       width: '50px',
     },
     {
       id: 'refund',
       numeric: true,
-      disablePadding: true,
+      disablePadding: false,
       label: t('need.refund'),
       width: '50px',
     },
     {
       id: 'sayContribution',
       numeric: true,
-      disablePadding: true,
+      disablePadding: false,
       label: t('need.sayContribution'),
       width: '50px',
     },
     {
       id: 'donation',
       numeric: true,
-      disablePadding: true,
+      disablePadding: false,
       label: t('need.donation'),
       width: '120px',
     },
@@ -284,8 +278,9 @@ EnhancedTableHead.propTypes = {
 
 export default function PaymentTable() {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
+  const isRtl = i18n.language === 'fa';
 
   // transactions pagination
   const [page, setPage] = useState(0);
@@ -382,8 +377,6 @@ export default function PaymentTable() {
   }, [transactions, page, rowsPerPage]);
 
   function Row(props) {
-    const { i18n } = useTranslation();
-
     const { row } = props;
 
     const [accOpen, setAccOpen] = useState(false);
@@ -469,7 +462,8 @@ export default function PaymentTable() {
               </Link>
               <Box
                 sx={{
-                  ml: 2,
+                  ml: isRtl && 2,
+                  mr: !isRtl && 2,
                 }}
               >
                 <Typography
@@ -876,7 +870,7 @@ export default function PaymentTable() {
           </TableBody>
           <TableFooter
             sx={{
-              direction: () => (theme.direction === 'rtl' ? 'rtl' : 'ltr'),
+              direction: isRtl ? 'rtl' : 'ltr',
             }}
           >
             <TableRow>
@@ -884,11 +878,14 @@ export default function PaymentTable() {
                 labelDisplayedRows={({ from, to, count }) =>
                   `${from}-${to} از ${count !== -1 ? count : `بیشتر از ${to}`}`
                 }
-                labelRowsPerPage="ردیف در هر صفحه"
+                labelRowsPerPage={t('app.rowsPerPage')}
                 rowsPerPageOptions={[5, 10, 25]}
                 count={totalItems}
                 rowsPerPage={rowsPerPage}
                 page={page}
+                sx={{
+                  direction: isRtl ? 'rtl' : 'ltr',
+                }}
                 slotProps={{
                   select: {
                     inputProps: {

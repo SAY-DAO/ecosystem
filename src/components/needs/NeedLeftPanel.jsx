@@ -126,7 +126,7 @@ function NeedLeftPanel({ season, setSeason, options = [] }) {
 
   return (
     <Box>
-      <Panel title={t('panels.kpis', 'KPIs')} align={!isRtl ? 'right' : 'left'}>
+      <Panel title={t('panels.needs')} align={!isRtl ? 'right' : 'left'}>
         <Card sx={{ mt: 1 }}>
           <CardContent>
             <Comparison data={comparisonData} season={season} />
@@ -179,7 +179,8 @@ function NeedLeftPanel({ season, setSeason, options = [] }) {
                   variant="body1"
                   color="text.secondary"
                 >
-                  {String(totals.totalNotDoneNeeds ?? '—')} {t('need.payableNeeds')}
+                  {String(totals.totalNotDoneNeeds ?? '—')}{' '}
+                  {t('need.payableNeeds')}
                 </Typography>
               )}
             </CardContent>

@@ -102,6 +102,7 @@ export default function ResponsiveDrawer(props) {
     p: { xs: 2, md: 3 },
     width: '100%',
     mr: { sm: !isRtl ? `${drawerWidth}px` : 0 },
+    direction: !isRtl ? 'rtl' : 'ltr',
   };
 
   const permanentDrawerOffset =
@@ -130,7 +131,7 @@ export default function ResponsiveDrawer(props) {
             align={!isRtl ? 'right' : 'left'}
             id={id}
           >
-            <Typography fontWeight="100">
+            <Typography fontWeight="100" sx={{ mb: 2 }}>
               {t(`reports.${id}.summary`)}
             </Typography>
           </Panel>
@@ -263,49 +264,25 @@ export default function ResponsiveDrawer(props) {
       <AppBar position="fixed" elevation={0} sx={appBarSx}>
         <Toolbar>
           {/* drawer on left: show menu icon + lang button before title (mobile menu => left) */}
-          {drawerAnchor === 'left' ? (
-            <>
-              <IconButton
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}
-              >
-                <MenuIcon />
-              </IconButton>
+          <>
+            <IconButton
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
 
-              <Box
-                sx={{
-                  m: 'auto',
-                  top: '0',
-                }}
-              >
-                <LogoIcon />
-              </Box>
-            </>
-          ) : (
-            /* drawer on right: title first, then lang button and mobile menu on right */
-            <>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, textAlign: 'left' }}
-              >
-                {t('app.title')}
-              </Typography>
-
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="end"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' }, color: 'black' }}
-              >
-                <MenuIcon />
-              </IconButton>
-            </>
-          )}
+            <Box
+              sx={{
+                m: 'auto',
+                top: '0',
+              }}
+            >
+              <LogoIcon />
+            </Box>
+          </>
         </Toolbar>
       </AppBar>
 
