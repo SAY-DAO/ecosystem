@@ -86,8 +86,8 @@
       "summary": "جزییات زمان‌بندی نیازها"
     },
     "checkpoints": {
-      "heading": "موجودی",
-      "summary": "موجودی کالا و نقطهٔ سفارش مجدد."
+      "heading": "نقاط عطف",
+      "summary": "رویدادهای مهم اخیر"
     },
     "virtualFamilies": {
       "heading": "خانواده مجازی",

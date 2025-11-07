@@ -61,10 +61,6 @@ export default function CheckpointLog() {
         color: (th) => th.palette.text.primary,
       }}
     >
-      <Typography variant="h6" component="div" sx={{ fontWeight: 500, mb: 1 }}>
-        {t('checkpoint.publicTitle')}
-      </Typography>
-
       {loading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
           <CircularProgress

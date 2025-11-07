@@ -86,8 +86,8 @@
       "summary": "Scheduling details of needs"
     },
     "checkpoints": {
-      "heading": "Inventory",
-      "summary": "Stock levels and reorder points."
+      "heading": "Milestones",
+      "summary": "Recent major events"
     },
     "virtualFamilies": {
       "heading": "Virtual families",
