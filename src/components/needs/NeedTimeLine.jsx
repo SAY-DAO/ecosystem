@@ -125,24 +125,48 @@ function NeedTimeLine() {
               name: t('need.timeLines.timeline.series.registerToConfirm'),
               data: paddedSeries[0],
             },
-            { name: t('need.timeLines.timeline.series.confirmToPay'), data: paddedSeries[1] },
-            { name: t('need.timeLines.timeline.series.payToPurchase'), data: paddedSeries[2] },
-            { name: t('need.timeLines.timeline.series.purchaseToNgo'), data: paddedSeries[3] },
-            { name: t('need.timeLines.timeline.series.ngoToChild'), data: paddedSeries[4] },
-            { name: t('need.timeLines.timeline.series.total'), data: paddedSeries[5] },
+            {
+              name: t('need.timeLines.timeline.series.confirmToPay'),
+              data: paddedSeries[1],
+            },
+            {
+              name: t('need.timeLines.timeline.series.payToPurchase'),
+              data: paddedSeries[2],
+            },
+            {
+              name: t('need.timeLines.timeline.series.purchaseToNgo'),
+              data: paddedSeries[3],
+            },
+            {
+              name: t('need.timeLines.timeline.series.ngoToChild'),
+              data: paddedSeries[4],
+            },
+            {
+              name: t('need.timeLines.timeline.series.total'),
+              data: paddedSeries[5],
+            },
           ]
         : [
             {
               name: t('need.timeLines.timeline.series.registerToConfirm'),
               data: paddedSeries[0],
             },
-            { name: t('need.timeLines.timeline.series.confirmToPay'), data: paddedSeries[1] },
-            { name: t('need.timeLines.timeline.series.payToService'), data: paddedSeries[2] },
+            {
+              name: t('need.timeLines.timeline.series.confirmToPay'),
+              data: paddedSeries[1],
+            },
+            {
+              name: t('need.timeLines.timeline.series.payToService'),
+              data: paddedSeries[2],
+            },
             {
               name: t('need.timeLines.timeline.series.documentFromNgo'),
               data: paddedSeries[3],
             },
-            { name: t('need.timeLines.timeline.series.total'), data: paddedSeries[4] },
+            {
+              name: t('need.timeLines.timeline.series.total'),
+              data: paddedSeries[4],
+            },
           ];
 
     const optionsTimeLine = {
@@ -152,7 +176,7 @@ function NeedTimeLine() {
         id: `need-timeline-chart-${page}`,
         animations: { enabled: true },
         toolbar: { show: false },
-        background: '#0b1220',
+        background: isDark && '#0b1220',
       },
 
       noData: { text: t('chart.noData') },
@@ -220,13 +244,19 @@ function NeedTimeLine() {
         item
         sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
       >
-        <div style={{ width: '100%', maxWidth: 1200 }}>
+        <div
+          style={{
+            width: '100%',
+            maxWidth: 1200,
+          }}
+        >
           <Chart
             key={chartKey}
             options={chartValues.optionsTimeLine}
             series={chartValues.seriesTimeLine}
             type="line"
             height="560"
+            background="white"
             style={{
               direction:
                 i18n && i18n.language && i18n.language.startsWith('fa')
