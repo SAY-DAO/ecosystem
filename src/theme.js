@@ -106,13 +106,14 @@ const darkPalette = {
   ...basePalette,
 };
 
-export const getTheme = (mode = 'light') =>
+export const getTheme = (isRtl, mode = 'light') =>
   createTheme({
-    direction: 'rtl',
+    direction: isRtl ? 'rtl' : 'ltr',
     palette: mode === 'light' ? lightPalette : darkPalette,
     typography: {
-      fontFamily:
-        "'IranYekan', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif",
+      fontFamily: isRtl
+        ? "'IranYekan', sans-serif"
+        : " Roboto, 'Helvetica Neue', Arial, sans-serif",
       h4: { fontWeight: 700 },
       h6: { fontWeight: 700 },
       body2: { fontSize: '0.95rem' },

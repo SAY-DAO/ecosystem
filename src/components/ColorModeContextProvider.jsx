@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider, CssBaseline, useMediaQuery } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { getTheme } from '../theme';
 
 export const ColorModeContext = React.createContext({
@@ -10,7 +11,10 @@ export const ColorModeContext = React.createContext({
 });
 
 export function ColorModeProvider({ children }) {
+  const { i18n } = useTranslation();
+
   const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
+  const isRtl = i18n.language === 'fa';
 
   const [mode, setMode] = React.useState(() => {
     try {
@@ -39,7 +43,7 @@ export function ColorModeProvider({ children }) {
     [mode],
   );
 
-  const theme = React.useMemo(() => getTheme(mode), [mode]);
+  const theme = React.useMemo(() => getTheme(isRtl, mode), [mode, isRtl]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
