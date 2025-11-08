@@ -305,7 +305,7 @@ export default function VirtualFamilyRoles({
                 </div>
               </div>
               
-                <div  style="direction: ${isRtl ? 'rtl' : 'ltr'};">
+                <div  style="color:#ffff; font-size:11px;direction: ${isRtl ? 'rtl' : 'ltr'};">
                   ${
                     people > 1
                       ? t('virtualFamily.tooltip.sentence_two', {
