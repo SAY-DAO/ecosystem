@@ -108,6 +108,7 @@ export default function VirtualFamilyRoles({
   const [chartOptions, setChartOptions] = useState(null);
 
   const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === 'fa';
 
   useEffect(() => {
     dispatch(fetchFamilyAnalytic());
@@ -303,7 +304,8 @@ export default function VirtualFamilyRoles({
                   <div style="color:#ffff; font-weight:700; font-size:14px;">${fmt(people * delivered)}</div>
                 </div>
               </div>
-                <div style="direction:rtl">
+              
+                <div  style="direction: ${isRtl ? 'rtl' : 'ltr'};">
                   ${
                     people > 1
                       ? t('virtualFamily.tooltip.sentence_two', {

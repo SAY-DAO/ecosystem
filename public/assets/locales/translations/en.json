@@ -27,11 +27,10 @@
       "title": "Active roles",
       "father": "Father",
       "mother": "Mother",
-      "amoo": "Paternal uncle",
-      "khaleh": "Maternal aunt",
-      "daei": "Maternal uncle",
-      "amme": "Paternal aunt",
-      "amo": "Uncle"
+      "amoo": "Amoo",
+      "khaleh": "Khaleh",
+      "daei": "Daei",
+      "amme": "Amme"
     },
     "title": "Needs with multiple payers",
     "subheader": "Last {{limit}} needs that have been paid by at least two people",
