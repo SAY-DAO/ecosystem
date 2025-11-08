@@ -73,11 +73,13 @@ export default function ResponsiveDrawer(props) {
   const [selectedId, setSelectedId] = useState(REPORT_IDS[0]);
   const [season, setSeason] = useState(options[0]);
 
-  // initial load
   useEffect(() => {
     dispatch(fetchSummary());
-    dispatch(fetchSeasonComparison({ season, includeRates: false }));
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchSeasonComparison({ season, includeRates: false }));
+  }, [season]);
 
   useEffect(() => {
     // eslint-disable-next-line no-undef
