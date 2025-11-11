@@ -221,7 +221,7 @@ export default function VirtualFamilyRoles({
     const options = {
       chart: { type: 'scatter', zoom: { type: 'xy' }, toolbar: { show: true } },
       colors: seriesPayload.map((s) => s.color),
-      markers: { size: 6, hover: { sizeOffset: 3 } },
+      markers: { size: 8, hover: { sizeOffset: 3 } },
       xaxis: {
         title: {
           text:
@@ -231,7 +231,7 @@ export default function VirtualFamilyRoles({
         },
         min: xRange[0],
         max: xRange[1],
-        tickAmount: 6,
+        tickAmount: 10,
         labels: {
           formatter: (val) =>
             val === null || val === undefined ? '-' : String(Math.round(val)),

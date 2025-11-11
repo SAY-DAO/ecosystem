@@ -28,6 +28,8 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
     }),
     shallowEqual,
   );
+  const familyAnalyitics = useSelector((state) => state.virtualFamily);
+  const { roles } = familyAnalyitics || {};
 
   // Helpers for Autocomplete to avoid flash when value is a primitive or different reference
   const getOptionLabel = useCallback((opt) => {
@@ -140,10 +142,14 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
 
   return (
     <Box>
-      <Panel title={t('panels.virtualFamilies')} align={!isRtl ? 'right' : 'left'}>
+      <Panel title="" align={!isRtl ? 'right' : 'left'}>
         <Card sx={{ mt: 1 }}>
           <CardContent>
-            <Comparison data={comparisonData} season={season} />
+            <Comparison
+              data={comparisonData}
+              season={season}
+              context={t('comparison.context.virtualFamilies')}
+            />
 
             <Autocomplete
               id="virtual-family-season"
@@ -211,7 +217,7 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
               <Typography variant="subtitle2" color="text.secondary">
                 {t('virtualFamily.roles.title')}
               </Typography>
-              {summary.rolesCount && (
+              {summary.rolesCount && roles && (
                 <Grid
                   container
                   direction="row"
@@ -223,6 +229,13 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                   spacing={3}
                 >
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {roles.motherTotalUniqueRoles}
+                    </Typography>
                     <Typography
                       variant="body2"
                       color="text.secondary"
@@ -240,6 +253,18 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
                     <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {roles.fatherTotalUniqueRoles}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    />
+                    <Typography
                       variant="body2"
                       color="text.secondary"
                       sx={{ fontSize: 12 }}
@@ -255,6 +280,13 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                     </Typography>
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {roles.amooTotalUniqueRoles}
+                    </Typography>
                     <Typography
                       variant="body2"
                       color="text.secondary"
@@ -272,6 +304,13 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
                     <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {roles.khalehTotalUniqueRoles}
+                    </Typography>
+                    <Typography
                       variant="body2"
                       color="text.secondary"
                       sx={{ fontSize: 12 }}
@@ -288,6 +327,13 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
                     <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {roles.daeiTotalUniqueRoles}
+                    </Typography>
+                    <Typography
                       variant="body2"
                       color="text.secondary"
                       sx={{ fontSize: 12 }}
@@ -303,6 +349,13 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                     </Typography>
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
+                    <Typography
+                      variant="body1"
+                      color="text.primary"
+                      sx={{ fontSize: 14 }}
+                    >
+                      {roles.ammeTotalUniqueRoles}
+                    </Typography>
                     <Typography
                       variant="body2"
                       color="text.secondary"

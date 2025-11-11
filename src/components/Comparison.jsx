@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -9,13 +8,11 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  CartesianGrid,
-  Cell,
   ReferenceLine,
+  Legend,
 } from 'recharts';
 import { Typography } from '@mui/material';
 import moment from 'moment-jalaali';
-import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
 moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: false });
@@ -214,8 +211,8 @@ export default function Comparison({
   data: propData,
   reduxSelector = selectSeasonComparison,
   season,
+  context,
 }) {
-  const theme = useTheme();
   const { i18n } = useTranslation(); // <-- requested: use this for locale-sensitive behaviour
   const { t } = useTranslation();
 
@@ -253,17 +250,17 @@ export default function Comparison({
   const seasonKPI = useMemo(() => computeSeasonKPI(data), [data]);
   const yDomain = useMemo(() => computeYDomainForCounts(data), [data]);
 
-  const barColor = (rate, isNew) => {
-    if (isNew) return theme.palette.grey.A400;
-    if (rate == null) return theme.palette.grey.A400;
-    const danger =
-      (theme.palette && theme.palette.danger && theme.palette.danger.main) ||
-      theme.palette.error.main;
-    return rate >= 0 ? theme.palette.success.main : danger;
-  };
-
   const hasData = data.some((d) => d.previous !== 0 || d.current !== 0);
   const isRtl = i18n.language === 'fa';
+
+  const renderColorfulLegendText = (value, entry) => {
+    const { color } = entry;
+    return (
+      <span style={{ color, fontSize: 12 }}>
+        {value === 'current' ? season : season - 1}
+      </span>
+    );
+  };
 
   return (
     <div
@@ -294,6 +291,7 @@ export default function Comparison({
             {t('comparison.kpi.totalInYear', {
               count: seasonKPI.currTotal.toLocaleString(),
               season,
+              context,
             })}
           </Typography>
           <br />
@@ -301,12 +299,13 @@ export default function Comparison({
             {t('comparison.kpi.totalInPrevYear', {
               count: seasonKPI.prevTotal.toLocaleString(),
               season: season - 1,
+              context,
             })}
           </Typography>
         </div>
       </div>
 
-      <div style={{ height: 260, marginBottom: 20 }}>
+      <div style={{ height: 260, marginBottom: 20, direction: 'ltr' }}>
         {hasData ? (
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -318,18 +317,29 @@ export default function Comparison({
                 bottom: 20,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#E6E9EE" />
+              {/* <CartesianGrid
+                strokeDasharray="1 1"
+                stroke="#E6E9EE"
+                horizontalCoordinatesGenerator={(props) =>
+                  props.height > 250 ? [150, 100, 50] : [100, 200]
+                }
+                verticalCoordinatesGenerator={(props) =>
+                  props.width > 350
+                    ? [110, 160, 210, 260, 310, 360, 410]
+                    : [200, 400]
+                }
+              /> */}
               <XAxis
                 dataKey="period"
-                label={{
-                  value: t('comparison.chart.xAxisLabel', {
-                    season,
-                    prevSeason: season - 1,
-                  }),
-                  position: 'insideBottom',
-                  offset: -15,
-                  fontSize: 12,
-                }}
+                // label={{
+                //   value: t('comparison.chart.xAxisLabel', {
+                //     season,
+                //     prevSeason: season - 1,
+                //   }),
+                //   position: 'insideBottom',
+                //   offset: -15,
+                //   fontSize: 12,
+                // }}
                 tick={{ fontSize: 8 }}
               />
 
@@ -340,14 +350,24 @@ export default function Comparison({
               />
               <Tooltip content={<CustomTooltip season={season} />} />
               <ReferenceLine y={0} stroke="#94A3B8" strokeDasharray="3 3" />
-              <Bar dataKey="current" minPointSize={4} radius={[6, 6, 6, 6]}>
-                {data.map((entry, idx) => (
-                  <Cell
-                    key={`cell-${idx}`}
-                    fill={barColor(entry.rate, entry.isNew)}
-                  />
-                ))}
-              </Bar>
+              <Legend
+                formatter={renderColorfulLegendText}
+                iconSize={10}
+                iconType="rect"
+              />
+
+              <Bar
+                dataKey="previous"
+                fill="#FFDF88"
+                minPointSize={4}
+                // radius={[4, 4, 4, 4]}
+              />
+              <Bar
+                dataKey="current"
+                fill="#F0A04B"
+                minPointSize={4}
+                // radius={[4, 4, 4, 4]}
+              />
             </BarChart>
           </ResponsiveContainer>
         ) : (

@@ -154,14 +154,16 @@ function PaymentLeftPanel({ season, setSeason, options = [] }) {
   );
 
   const isRtl = i18n.language === 'fa';
-
   return (
     <Box>
-      <Panel title={t('panels.payments')} align={!isRtl ? 'right' : 'left'}>
+      <Panel title="" align={!isRtl ? 'right' : 'left'}>
         <Card sx={{ mt: 1 }}>
           <CardContent>
-            <Comparison data={paysData} season={season} />
-
+            <Comparison
+              data={paysData}
+              season={season}
+              context={t('comparison.context.transactions')}
+            />
             <Autocomplete
               id="season-autocomplete"
               value={selectedOption}
@@ -191,7 +193,7 @@ function PaymentLeftPanel({ season, setSeason, options = [] }) {
           <Card>
             <CardContent>
               <Typography variant="subtitle2" color="text.secondary">
-                {t('panels.totalPayments')}
+                {t('reports.payments.totalPayments')}
               </Typography>
 
               {loadingSummary ? (
@@ -213,7 +215,7 @@ function PaymentLeftPanel({ season, setSeason, options = [] }) {
                 variant="body2"
                 color="text.secondary"
               >
-                {t('panels.totalPaymentsDescription')}
+                {t('reports.payments.totalPaymentsDescription')}
               </Typography>
             </CardContent>
           </Card>

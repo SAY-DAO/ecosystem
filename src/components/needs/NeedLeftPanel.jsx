@@ -126,11 +126,14 @@ function NeedLeftPanel({ season, setSeason, options = [] }) {
 
   return (
     <Box>
-      <Panel title={t('panels.needs')} align={!isRtl ? 'right' : 'left'}>
+      <Panel title="" align={!isRtl ? 'right' : 'left'}>
         <Card sx={{ mt: 1 }}>
           <CardContent>
-            <Comparison data={comparisonData} season={season} />
-
+            <Comparison
+              data={comparisonData}
+              season={season}
+              context={t('comparison.context.needs')}
+            />
             <Autocomplete
               id="season-autocomplete-done"
               value={selectedOption}
