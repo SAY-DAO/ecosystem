@@ -173,13 +173,13 @@ function ChildrenFamilyNetwork() {
         const user = m.user || {};
         return {
           id: `Node ch-${childRaw.id}${user.id}.0`,
-          size: 8,
+          size: 10,
           color: '#767e89',
           img: user.avatarUrl
             ? prepareUrl(user.avatarUrl)
             : isDark
-              ? '/images/logoDark.png'
-              : '/images/logoLight.png',
+              ? '/images/userDark.svg'
+              : '/images/userLight.svg',
           theId: (user.id || 0) * 10000 + idx,
           parentChildIndex: childIndex,
           data: { user, child: childRaw },
