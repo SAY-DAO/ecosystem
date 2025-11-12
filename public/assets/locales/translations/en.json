@@ -1,6 +1,7 @@
 {
   "app": {
     "title": "Ecosystem",
+    "user": "User",
     "rowsPerPage": "Rows per page",
     "currency_toman": "Toman"
   },
@@ -18,11 +19,11 @@
   },
   "virtualFamily": {
     "tooltip": {
-      "sentence_one": "{{count}} {{name}} has contributed to fulfilling {{delivered}} needs.",
-      "sentence_two": "{{count}} {{name}} each contributed to fulfilling {{delivered}} needs."
+      "sentence_one": "{{count}} {{name}} has played a role in fulfilling {{delivered}} need.",
+      "sentence_two": "{{count}} {{name}} have each played a role in fulfilling {{delivered}} needs."
     },
     "users": "Registered users",
-    "description": "{{vMembers}} users have at least one active role in the children's virtual family",
+    "description": "{{vMembers}} users have at least one active role in children's virtual family",
     "roles": {
       "title": "Active roles",
       "father": "Father",
@@ -33,12 +34,12 @@
       "amme": "Amme"
     },
     "title": "Needs with multiple payers",
-    "subheader": "Last {{limit}} needs that have been paid by at least two people",
+    "subheader": "Latest {{limit}} needs that have been paid by at least two people",
     "needFallback": "Need #{{id}}",
     "payers": "{{count}} payers",
     "cost": "{{cost}} {{currency}}",
     "deliveryLabel": "Delivery: {{date}}",
-    "payerCountsTop": "Number of payers (top {{top}})",
+    "payerCountsTop": "Payer counts (top {{top}})",
     "topCollaborations": "Top collaborations",
     "needLabel": "Need #{{id}} - {{cost}}",
     "amountTooltip": "{{amount}}"
@@ -47,15 +48,23 @@
     "title": "Registered children",
     "description": "{{vMembers}} children have at least one member in their family",
     "tooltip": {
-      "present": "Children who are ready to accept members into their virtual family",
-      "tempGone": "Children who are currently not under coverage but may return",
-      "gone": "Children who are either older than 18 or no longer under coverage for other reasons"
+      "present": "Under care: children who are ready to accept a member into their virtual family.",
+      "tempGone": "Temporarily absent: children who are currently not covered but may return.",
+      "gone": "Left: children who are over 18 or, for reasons such as leaving the NGO, are not covered."
     },
     "all": {
       "confirmed": "Confirmed",
       "present": "Under care",
-      "tempGone": "Temporarily absent",
-      "gone": "Left"
+      "tempGone": "Temporary absence",
+      "gone": "Care stopped"
+    },
+    "childrenNgosCard": {
+      "title": "NGOs ({{total}})",
+      "empty": "No items found",
+      "ariaListLabel": "Centers list — showing {{visible}} items, scroll to see more",
+      "chipInactive": "Inactive",
+      "chipDeleted": "Deleted",
+      "noPhone": "No phone number registered"
     }
   },
   "analyticFamily": {
@@ -72,42 +81,35 @@
     "noData": "No data to display"
   },
   "actions": {
-    "refresh": "Reload",
+    "refresh": "Refresh",
     "moreInfo": "More info"
   },
   "reports": {
     "payments": {
       "heading": "Payments report",
-      "summary": "Latest financial transactions"
+      "summary": "Latest financial transactions",
+      "totalPaymentsDescription": "Total amount paid for all needs",
+      "totalPayments": "Total payments"
     },
     "needs": {
       "heading": "Needs report",
       "summary": "Scheduling details of needs"
     },
     "checkpoints": {
-      "heading": "Milestones",
-      "summary": "Recent major events"
+      "heading": "Checkpoints",
+      "summary": "Recent important events"
     },
     "virtualFamilies": {
       "heading": "Virtual families",
-      "summary": "Active members of all children’s families"
+      "summary": "Active family members of all children"
     },
     "children": {
       "heading": "Children",
-      "summary": "Children with at least one member in their family"
+      "summary": "Children who have at least one member in their family"
     }
   },
-  "panels": {
-    "totalPaymentsDescription": "Total amount paid for all needs",
-    "totalPayments": "Total payments",
-    "payments": "Transaction status",
-    "needs": "Resolved needs status",
-    "virtualFamilies": "Virtual families registration status",
-    "children": "Children registration status",
-    "notes": "Notes"
-  },
   "placeholders": {
-    "paragraph1": "This is sample text to fill space and demonstrate the layout structure."
+    "paragraph1": "This is a sample text to fill space and demonstrate the design structure."
   },
   "common": {
     "summaryAndMetrics": "Summary and metrics for {{report}}.",
@@ -116,13 +118,13 @@
   "checkpoint": {
     "publicTitle": "Recent checkpoints",
     "errorMessage": "Error: {{message}}",
-    "noCheckpoints": "No checkpoints have been logged yet.",
+    "noCheckpoints": "No checkpoints have been recorded yet.",
     "untitled": "Untitled",
     "showDetails": "Show details",
     "hideDetails": "Hide details",
     "expandDetails": "Expand details",
     "collapseDetails": "Collapse details",
-    "listAria": "List of checkpoints",
+    "listAria": "Checkpoints list",
     "createTitle": "Create checkpoint",
     "titleLabel": "Title",
     "titleRequired": "Title is required",
@@ -130,7 +132,7 @@
     "typeRequired": "Type is required",
     "maxChars": "Maximum {{count}} characters",
     "maxCharsHint": "Maximum {{count}} characters",
-    "urlLabel": "Related link to the checkpoint",
+    "urlLabel": "URL related to the checkpoint",
     "urlHelper": "Optional",
     "maxUrlChars": "Maximum {{count}} characters",
     "descriptionLabel": "Description",
@@ -140,7 +142,7 @@
     "createButton": "Create checkpoint",
     "saving": "Saving...",
     "dateLabel": "Checkpoint date",
-    "dateRequired": "Entering checkpoint date is required",
+    "dateRequired": "Checkpoint date is required",
     "createdSuccess": "Checkpoint created successfully!",
     "createdError": "Error creating checkpoint.",
     "closeAria": "Close",
@@ -172,7 +174,7 @@
       "automation": "Automation",
       "legal": "Legal",
       "finance": "Finance",
-      "hr": "Human Resources",
+      "hr": "Human resources",
       "meeting": "Meeting",
       "training": "Training",
       "child-left": "Child left",
@@ -182,54 +184,54 @@
     }
   },
   "need": {
-    "delivered": "Delivered needs",
-    "payableNeeds": "Available need to be paid",
-    "waitingNgo": "Waiting Ngo confirmation",
+    "delivered": "Number of delivered needs",
+    "payableNeeds": "Payable needs",
+    "waitingNgo": "Waiting for NGO approval",
     "waitingPurchase": "Waiting for purchase ...",
     "waitingPayment": "Waiting for payment ...",
-    "partialPay": "Partial Pay",
-    "purchaseCost": "Purchase cost",
-    "needAmount": "Paid",
+    "purchaseCost": "Final cost of the need",
+    "partialPay": "Partial payment",
+    "needAmount": "Payment",
+    "fromWallet": "From wallet",
     "refund": "Refund",
-    "fromWallet": "From Wallet",
     "sayContribution": "SAY contribution",
-    "credit": "Credit",
+    "credit": "Refund",
     "donation": "SAY empowerment",
-    "donation2": "empowerment",
+    "donation2": "Empowerment",
     "title": "Needs",
-    "updatedNeed": "Successfully Updated!",
+    "updatedNeed": "Completed successfully!",
     "autoCompleteType": "Service/Product",
     "autoCompleteStatus": "Status",
-    "id": "Need id",
-    "titleEdit": "Edit Need Details",
-    "titleAdd": "Add Need Details",
-    "titleStatus": "Need Title",
+    "id": "ID",
+    "titleEdit": "Edit need",
+    "titleAdd": "Add need",
+    "titleStatus": "Title",
     "payable": "Payable",
     "unpayable": "Unpayable",
-    "fullyPaid": "Paid fully",
+    "fullyPaid": "Paid",
     "update": "Edit",
     "imageUrl": "Icon",
-    "childSayName": "SAY Name",
+    "childSayName": "SAY name",
     "name": {
       "fa": "Need name (fa)",
       "en": "Need name (en)"
     },
-    "etitle": "Store title",
+    "etitle": "Title in store",
     "cost": "Price",
     "expectedDeliveryToNgo": "Estimated arrival time",
-    "paid": "Paid",
+    "paid": "Paid amount",
     "progress": "Progress",
     "status": "Status",
     "link": "Link",
     "affiliateLinkUrl": "Affiliate link URL",
     "type_name": "Type",
     "stats": "Needs statistics",
-    "newStatus": "New status...",
+    "newStatus": "New status ...",
     "display": "Displaying",
     "loadMore": "Load more needs",
-    "totalExplain": "Please note that this number is the total number of needs. The number of needs created by you may be less than the total.",
-    "totalCount": "All needs",
-    "statsRatio": "Completed / All needs",
+    "totalExplain": "Please be aware that this number is the total number of needs. The number of needs created by you may be less than the total.",
+    "totalCount": "Total needs",
+    "statsRatio": "Completed / total needs",
     "providerSelect": "Please select a provider",
     "addProvider": "Add provider",
     "provider": "Provider name",
@@ -243,7 +245,7 @@
     },
     "isUrgent": "Urgent",
     "informations": "More information",
-    "details": "Case worker's note",
+    "details": "Social worker's note",
     "category": "Category",
     "categories": {
       "growth": "Growth",
@@ -257,17 +259,17 @@
       "en": "English description (en)"
     },
     "img": {
-      "service": "Image",
-      "product": "Store image"
+      "service": "Photo",
+      "product": "Store photo"
     },
-    "created": "Created at",
+    "created": "Need created",
     "isConfirmed": "Confirmation status",
     "socialWorker": "Social worker",
-    "confirmUser": "Confirmer",
-    "confirmDate": "Confirmation time",
-    "updated": "Last updated",
+    "confirmUser": "Approver",
+    "confirmDate": "Need confirmed",
+    "updated": "Last edited time",
     "doneAt": "Completion time",
-    "child_delivery_date": "Delivery time to child",
+    "child_delivery_date": "Delivery date to child",
     "preNeed": "Template",
     "doing_duration": "Duration",
     "payers": "Payers",
@@ -278,14 +280,14 @@
     "today": "Today's date",
     "needStatusTitle": "Change status",
     "needStatus": {
-      "-1": "Unconfirmed",
+      "-1": "Not confirmed",
       "0": "Unpaid",
-      "1": "Half paid",
+      "1": "Partially paid",
       "2": "Fully paid",
-      "p3": "Product purchased",
-      "p4": "NGO received",
+      "p3": "Item purchased",
+      "p4": "Received by NGO",
       "p5": "Sent to child",
-      "s3": "Funds transferred to NGO",
+      "s3": "Transferred to NGO",
       "s4": "Sent to child",
       "signature": "Signature",
       "sign": "Sign",
@@ -296,23 +298,23 @@
         "dialogTitle": "Similar needs"
       },
       "service": {
-        "1": "Half payment",
-        "2": "Full payment",
-        "3": "Funds sent to NGO",
+        "1": "Partial payment",
+        "2": "Fully paid",
+        "3": "Cost transferred to NGO",
         "4": "Sent to child"
       },
       "product": {
-        "1": "Half payment",
-        "2": "Full payment",
-        "3": "Product purchased",
+        "1": "Partial payment",
+        "2": "Fully paid",
+        "3": "Item purchased",
         "4": "Sent to NGO",
         "5": "Sent to child"
       }
     },
     "timeLines": {
       "chart": {
-        "noData": "No data available",
-        "days": "days"
+        "noData": "No data to display",
+        "days": "Days"
       },
       "filter": {
         "needTypeLabel": "Need type",
@@ -320,18 +322,18 @@
         "service": "Service"
       },
       "pagination": {
-        "ariaLabel": "Needs timeline pagination"
+        "ariaLabel": "Needs timeline chart pagination"
       },
       "timeline": {
         "series": {
-          "registerToConfirm": "Register → Confirm",
-          "confirmToPay": "Confirm → Payment",
-          "payToPurchase": "Payment → Purchase",
-          "purchaseToNgo": "Purchase → NGO received",
-          "ngoToChild": "NGO → Child received",
+          "registerToConfirm": "Register to confirm",
+          "confirmToPay": "Confirm to pay",
+          "payToPurchase": "Pay to purchase",
+          "purchaseToNgo": "Purchase to NGO",
+          "ngoToChild": "NGO to child",
           "total": "Total",
-          "payToService": "Payment → Service delivery",
-          "documentFromNgo": "Documentation from NGO"
+          "payToService": "Pay to service",
+          "documentFromNgo": "Document from NGO"
         }
       }
     }
@@ -339,16 +341,16 @@
   "report": {
     "statusChange": {
       "expectedDeliveryToNgo": "Expected date of delivery to NGO",
-      "retailerPaid": "Actual amount paid to retailer",
+      "retailerPaid": "Actual amount paid",
       "paid": "Amount paid",
       "retailerCode": "Order number",
-      "deliveredToNgo": "Date product arrived at NGO",
+      "deliveredToNgo": "Date delivered to NGO",
       "bankTrackId": "Bank tracking code",
       "moneyToNgo": "Date funds received",
       "purchasedCost": "Actual amount paid"
     },
     "history": {
-      "title": "What happened",
+      "title": "Need timeline",
       "status": "Status",
       "receipt": "Receipts",
       "date": "Date"
@@ -356,34 +358,34 @@
     "swId": "Social worker’s identification: SW-{{socialWorkerGeneratedCode}}",
     "dkc": "Order: DKC-{{dkc}}",
     "p2s2": {
-      "img": "https://sayapp.company/public/resources/img/done.jpg",
+      "img": "[https://sayapp.company/public/resources/img/done.jpg](https://sayapp.company/public/resources/img/done.jpg)",
       "title": "One of {{childSayName}}’s needs is completely done",
-      "paragraph": "With your collaborations, all expenses for {{needName}} have been paid on {{date}}."
+      "paragraph": "With your collaborations, all expenses for {{needName}} has been paid for on {{date}}."
     },
     "p3": {
-      "img": "https://sayapp.company/public/resources/img/purchased.jpg",
+      "img": "[https://sayapp.company/public/resources/img/purchased.jpg](https://sayapp.company/public/resources/img/purchased.jpg)",
       "title": "Purchase receipt for {{childSayName}}’s needs",
-      "paragraph": "On {{date}} {{needName}} was ordered for {{childSayName}} from an online retailer."
+      "paragraph": "On {{date}} {{needName}} has been ordered for {{childSayName}} from online retailer."
     },
     "p4": {
-      "img": "https://sayapp.company/public/resources/img/ngo_delivered.jpg",
+      "img": "[https://sayapp.company/public/resources/img/ngo_delivered.jpg](https://sayapp.company/public/resources/img/ngo_delivered.jpg)",
       "title": "Product delivered to the NGO notification",
-      "paragraph": "On {{date}} {{needName}} was delivered to the NGO."
+      "paragraph": "On {{date}} {{needName}} is delivered to the NGO."
     },
     "p5": {
-      "img": "https://sayapp.company/public/resources/img/child_delivered.jpg",
+      "img": "[https://sayapp.company/public/resources/img/child_delivered.jpg](https://sayapp.company/public/resources/img/child_delivered.jpg)",
       "title": "Product delivered to {{childSayName}}",
-      "paragraph": "{{needName}} was delivered to {{childSayName}} on {{date}}."
+      "paragraph": "{{needName}} is delivered to {{childSayName}} on {{date}}."
     },
     "s3": {
-      "img": "https://sayapp.company/public/resources/img/money.jpg",
+      "img": "[https://sayapp.company/public/resources/img/money.jpg](https://sayapp.company/public/resources/img/money.jpg)",
       "title": "Money transfer to the NGO by SAY",
-      "paragraph": "The amount of {{needCost}} Tomans for purchasing {{childSayName}}’s {{needName}} was transferred into the NGO’s bank account on {{date}}."
+      "paragraph": "The amount of {{needCost}} Tomans for purchasing {{childSayName}}’s {{needName}}, has been transferred into the NGO’s bank account, on {{date}}."
     },
     "s4": {
-      "img": "https://sayapp.company/public/resources/img/child_delivered.jpg",
+      "img": "[https://sayapp.company/public/resources/img/child_delivered.jpg](https://sayapp.company/public/resources/img/child_delivered.jpg)",
       "title": "{{childSayName}}’s {{needName}} has been paid for",
-      "paragraph": "The amount of {{needCost}} Tomans for {{childSayName}}’s {{needName}} was paid by the NGO on {{date}}."
+      "paragraph": "The amount of {{needCost}} Tomans for {{childSayName}}’s {{needName}}, has been paid by the NGO on {{date}}."
     },
     "contact": "At SAY, we listen to you.",
     "address": "4th Floor, No 22, Azarshahr St, Iranshahr St, Karimkhan Zand St, Tehran, Iran",
@@ -397,12 +399,12 @@
   },
   "comparison": {
     "context": {
-      "transactions": "Payments",
+      "transactions": "Transactions",
       "needs": "Needs",
-      "virtualFamilies": "Virtual Families"
+      "virtualFamilies": "Members"
     },
     "chart": {
-      "xAxisLabel": "{{season}} - Monthly comparison {{prevSeason}}",
+      "xAxisLabel": "{{season}} - Monthly comparison of {{prevSeason}}",
       "noData": "No data available"
     },
     "tooltip": {
@@ -410,8 +412,8 @@
       "change": "Change"
     },
     "kpi": {
-      "totalInYear": "Total {{count}} {{context}} in {{season}}",
-      "totalInPrevYear": "Total {{count}} {{context}} in {{season}}"
+      "totalInYear": "Total {{context}} {{count}} in year {{season}}",
+      "totalInPrevYear": "Total {{context}} {{count}} in year {{season}}"
     }
   }
 }

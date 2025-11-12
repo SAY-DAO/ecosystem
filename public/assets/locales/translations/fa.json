@@ -1,6 +1,7 @@
 {
   "app": {
     "title": "اکوسیستم",
+    "user": "کاربر",
     "rowsPerPage": "ردیف در هر صفحه",
     "currency_toman": "تومان"
   },
@@ -56,6 +57,14 @@
       "present": "تحت سرپرستی",
       "tempGone": "وقفه در سرپرستی",
       "gone": "توقف سرپرستی"
+    },
+    "childrenNgosCard": {
+      "title": "سازمان‌های مردم نهاد ({{total}})",
+      "empty": "موردی یافت نشد",
+      "ariaListLabel": "لیست مراکز — نمایش {{visible}} مورد و اسکرول برای مشاهده بقیه",
+      "chipInactive": "غیرفعال",
+      "chipDeleted": "حذف‌شده",
+      "noPhone": "شماره‌ای ثبت نشده"
     }
   },
   "analyticFamily": {

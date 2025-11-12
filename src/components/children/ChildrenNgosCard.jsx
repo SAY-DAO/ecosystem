@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import {
   Card,
   CardHeader,
@@ -36,6 +37,8 @@ const parsePhones = (raw) => {
 };
 
 export default function ChildrenNgosCard({ ngos, maxHeight, compact = true }) {
+  const { t } = useTranslation();
+
   const enriched = useMemo(
     () =>
       (ngos || []).map((n) => ({
@@ -64,7 +67,7 @@ export default function ChildrenNgosCard({ ngos, maxHeight, compact = true }) {
       <CardHeader
         title={
           <Typography variant="subtitle2" color="text.secondary">
-            سازمان‌های مردم نهاد ({total})
+            {t('children.childrenNgosCard.title', { total })}
           </Typography>
         }
       />
@@ -74,7 +77,7 @@ export default function ChildrenNgosCard({ ngos, maxHeight, compact = true }) {
       >
         {total === 0 ? (
           <Typography variant="body2" color="text.secondary">
-            موردی یافت نشد
+            {t('children.childrenNgosCard.empty')}
           </Typography>
         ) : (
           <Box
@@ -92,7 +95,9 @@ export default function ChildrenNgosCard({ ngos, maxHeight, compact = true }) {
               },
             }}
             role="region"
-            aria-label={`لیست مراکز — نمایش ${defaultVisibleRows} مورد و اسکرول برای مشاهده بقیه`}
+            aria-label={t('children.childrenNgosCard.ariaListLabel', {
+              visible: defaultVisibleRows,
+            })}
           >
             <List disablePadding>
               {enriched.map((ngo) => (
@@ -140,14 +145,14 @@ export default function ChildrenNgosCard({ ngos, maxHeight, compact = true }) {
                           {!ngo.isActive && (
                             <Chip
                               size="small"
-                              label="غیرفعال"
+                              label={t('children.childrenNgosCard.chipInactive')}
                               sx={{ fontSize: 11 }}
                             />
                           )}
                           {ngo.isDeleted && (
                             <Chip
                               size="small"
-                              label="حذف‌شده"
+                              label={t('children.childrenNgosCard.chipDeleted')}
                               color="error"
                               sx={{ fontSize: 11 }}
                             />
@@ -184,7 +189,7 @@ export default function ChildrenNgosCard({ ngos, maxHeight, compact = true }) {
                                 variant="caption"
                                 color="text.secondary"
                               >
-                                شماره‌ای ثبت نشده
+                                {t('children.childrenNgosCard.noPhone')}
                               </Typography>
                             )}
                           </Box>

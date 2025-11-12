@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { useSelector, shallowEqual } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import StraightOutlinedIcon from '@mui/icons-material/StraightOutlined';
 import Panel from '../Panel';
 import Comparison from '../Comparison';
 
@@ -190,7 +191,7 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                 </Typography>
               )}
 
-              {!summary || !summary.rolesCount ? (
+              {!summary || !summary.activeUsersCount ? (
                 <Skeleton width={100} height={20} />
               ) : (
                 <Typography
@@ -200,12 +201,12 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                 >
                   {t('virtualFamily.description', {
                     vMembers:
-                      summary.rolesCount.mothersCount +
-                      summary.rolesCount.fathersCount +
-                      summary.rolesCount.amoosCount +
-                      summary.rolesCount.khalehsCount +
-                      summary.rolesCount.daeisCount +
-                      summary.rolesCount.ammesCount,
+                      summary.activeUsersCount.activeFathersCount +
+                      summary.activeUsersCount.activeMothersCount +
+                      summary.activeUsersCount.activeAmoosCount +
+                      summary.activeUsersCount.activeKhalehsCount +
+                      summary.activeUsersCount.activeDaeisCount +
+                      summary.activeUsersCount.activeAmmesCount,
                   })}
                 </Typography>
               )}
@@ -217,7 +218,7 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
               <Typography variant="subtitle2" color="text.secondary">
                 {t('virtualFamily.roles.title')}
               </Typography>
-              {summary.rolesCount && roles && (
+              {summary.activeUsersCount && roles && (
                 <Grid
                   container
                   direction="row"
@@ -243,12 +244,20 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                     >
                       {t('virtualFamily.roles.mother')}
                     </Typography>
+                    <StraightOutlinedIcon />
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('app.user')}
+                    </Typography>
                     <Typography
                       variant="body1"
                       color="text.primary"
                       sx={{ fontSize: 14 }}
                     >
-                      {summary.rolesCount.mothersCount}
+                      {summary.activeUsersCount.activeMothersCount}
                     </Typography>
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
@@ -271,12 +280,20 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                     >
                       {t('virtualFamily.roles.father')}
                     </Typography>
+                    <StraightOutlinedIcon />
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('app.user')}
+                    </Typography>
                     <Typography
                       variant="body1"
                       color="text.primary"
                       sx={{ fontSize: 14 }}
                     >
-                      {summary.rolesCount.fathersCount}
+                      {summary.activeUsersCount.activeFathersCount}
                     </Typography>
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
@@ -294,12 +311,20 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                     >
                       {t('virtualFamily.roles.amoo')}
                     </Typography>
+                    <StraightOutlinedIcon />
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('app.user')}
+                    </Typography>
                     <Typography
                       variant="body1"
                       color="text.primary"
                       sx={{ fontSize: 14 }}
                     >
-                      {summary.rolesCount.amoosCount}
+                      {summary.activeUsersCount.activeAmoosCount}
                     </Typography>
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
@@ -317,12 +342,20 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                     >
                       {t('virtualFamily.roles.khaleh')}
                     </Typography>
+                    <StraightOutlinedIcon />{' '}
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('app.user')}
+                    </Typography>
                     <Typography
                       variant="body1"
                       color="text.primary"
                       sx={{ fontSize: 14 }}
                     >
-                      {summary.rolesCount.khalehsCount}
+                      {summary.activeUsersCount.activeKhalehsCount}
                     </Typography>
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
@@ -340,12 +373,20 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                     >
                       {t('virtualFamily.roles.daei')}
                     </Typography>
+                    <StraightOutlinedIcon />{' '}
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('app.user')}
+                    </Typography>
                     <Typography
                       variant="body1"
                       color="text.primary"
                       sx={{ fontSize: 14 }}
                     >
-                      {summary.rolesCount.daeisCount}
+                      {summary.activeUsersCount.activeDaeisCount}
                     </Typography>
                   </Grid>
                   <Grid item lg={2} md={4} xs={4} sx={{ textAlign: 'center' }}>
@@ -363,12 +404,20 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                     >
                       {t('virtualFamily.roles.amme')}
                     </Typography>
+                    <StraightOutlinedIcon />
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {t('app.user')}
+                    </Typography>
                     <Typography
                       variant="body1"
                       color="text.primary"
                       sx={{ fontSize: 14 }}
                     >
-                      {summary.rolesCount.ammesCount}
+                      {summary.activeUsersCount.activeAmmesCount}
                     </Typography>
                   </Grid>
                 </Grid>
