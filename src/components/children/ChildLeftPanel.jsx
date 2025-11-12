@@ -118,7 +118,7 @@ function ChildLeftPanel({ season, setSeason, options = [] }) {
 
   return (
     <Box>
-      <Panel title={t('panels.children', 'KPIs')} align={!isRtl ? 'right' : 'left'}>
+      <Panel title="" align={!isRtl ? 'right' : 'left'}>
         <Card sx={{ mt: 1 }}>
           <CardContent>
             <Comparison data={comparisonData} season={season} />
