@@ -236,6 +236,7 @@ function ChildrenFamilyNetwork() {
     setSelectedNodeId(randomNode.id);
     didRandomSelectRef.current = true;
   }, [baseGraph]);
+  
   // render
   return (
     <Grid

@@ -23,9 +23,10 @@ import { fetchCheckpoints } from '../../features/reportSlice';
 
 export default function CheckpointLog() {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+  const isRtl = i18n.language === 'fa';
 
   const checkpoints = useSelector((s) => s.report && s.report.checkpoints);
   const loading = useSelector((s) => s.report && s.report.loading);
@@ -143,7 +144,7 @@ export default function CheckpointLog() {
                           noWrap
                           component="span"
                         >
-                          {it.title || t('checkpoint.untitled')}
+                          {isRtl ? it.title.fa : it.title.en}
                         </Typography>
                       </Grid>
 
@@ -233,7 +234,7 @@ export default function CheckpointLog() {
                               fontSize: 12,
                             }}
                           >
-                            {it.description}
+                            {isRtl ? it.description.fa : it.description.en}
                           </Typography>
                         )}
 
