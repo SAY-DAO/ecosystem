@@ -14,18 +14,13 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
-import { useTheme } from '@mui/material/styles';
 import { dateConvertor } from '../../utils/persianToEnglish';
-import { getChipStyle, getChipSxFromBase } from '../../utils/chipStyle';
 import { fetchCheckpoints } from '../../features/reportSlice';
 
 export default function CheckpointLog() {
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
-  const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
   const isRtl = i18n.language === 'fa';
 
   const checkpoints = useSelector((s) => s.report && s.report.checkpoints);
@@ -106,15 +101,6 @@ export default function CheckpointLog() {
             checkpoints.map((it) => {
               const id = it.id ?? it._id ?? JSON.stringify(it);
 
-              // localized type label (fall back to raw type)
-              const typeLabel = it.type
-                ? t(`checkpoint.typeLabels.${it.type}`, {
-                    defaultValue: it.type,
-                  })
-                : '';
-
-              const chipStyle = getChipStyle(it.type);
-
               return (
                 <React.Fragment key={id}>
                   <ListItem
@@ -147,27 +133,6 @@ export default function CheckpointLog() {
                           {isRtl ? it.title.fa : it.title.en}
                         </Typography>
                       </Grid>
-
-                      {/* Type chip (keeps natural width) */}
-                      <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
-                        {typeLabel ? (
-                          <Chip
-                            variant="outlined"
-                            label={typeLabel}
-                            size="small"
-                            sx={getChipSxFromBase(chipStyle.bg, {
-                              bgAlpha: !isDark ? 0.06 : 0.4,
-                              borderAlpha: !isDark ? 0.44 : 1,
-                              // forceTextColor: chipStyle.color,
-                            })}
-                          />
-                        ) : (
-                          <Typography variant="caption" sx={{ opacity: 0.85 }}>
-                            {it.type || ''}
-                          </Typography>
-                        )}
-                      </Grid>
-
                       {/* Date + actions: pushed to the far right, stays on one line */}
                       <Grid
                         item
