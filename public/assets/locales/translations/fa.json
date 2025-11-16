@@ -405,7 +405,7 @@
       "virtualFamilies": "عضو"
     },
     "context2": {
-      "needs": "مجموع",
+      "needs": "ارسال",
       "virtualFamilies": "ثیت‌نام",
       "children": "ثیت‌نام"
     },
