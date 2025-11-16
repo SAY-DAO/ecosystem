@@ -121,7 +121,12 @@ function ChildLeftPanel({ season, setSeason, options = [] }) {
       <Panel title="" align={!isRtl ? 'right' : 'left'}>
         <Card sx={{ mt: 1 }}>
           <CardContent>
-            <Comparison data={comparisonData} season={season} />
+            <Comparison
+              data={comparisonData}
+              season={season}
+              context={t('comparison.context.children')}
+              context2={t('comparison.context2.children')}
+            />
 
             <Autocomplete
               id="season-autocomplete-done"

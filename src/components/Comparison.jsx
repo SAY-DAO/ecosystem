@@ -212,6 +212,7 @@ export default function Comparison({
   reduxSelector = selectSeasonComparison,
   season,
   context,
+  context2,
 }) {
   const { i18n } = useTranslation(); // <-- requested: use this for locale-sensitive behaviour
   const { t } = useTranslation();
@@ -288,19 +289,33 @@ export default function Comparison({
                 : 0}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            {t('comparison.kpi.totalInYear', {
-              count: seasonKPI.currTotal.toLocaleString(),
-              season,
-              context,
-            })}
+            {context2
+              ? t('comparison.kpi2.totalInYear', {
+                  count: seasonKPI.currTotal.toLocaleString(),
+                  season,
+                  context,
+                  context2,
+                })
+              : t('comparison.kpi.totalInYear', {
+                  count: seasonKPI.currTotal.toLocaleString(),
+                  season,
+                  context,
+                })}
           </Typography>
           <br />
           <Typography variant="caption" color="text.secondary">
-            {t('comparison.kpi.totalInPrevYear', {
-              count: seasonKPI.prevTotal.toLocaleString(),
-              season: season - 1,
-              context,
-            })}
+            {context2
+              ? t('comparison.kpi2.totalInPrevYear', {
+                  count: seasonKPI.prevTotal.toLocaleString(),
+                  season: season - 1,
+                  context,
+                  context2,
+                })
+              : t('comparison.kpi.totalInPrevYear', {
+                  count: seasonKPI.prevTotal.toLocaleString(),
+                  season: season - 1,
+                  context,
+                })}
           </Typography>
         </div>
       </div>

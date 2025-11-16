@@ -150,6 +150,7 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
               data={comparisonData}
               season={season}
               context={t('comparison.context.virtualFamilies')}
+              context2={t('comparison.context2.virtualFamilies')}
             />
 
             <Autocomplete

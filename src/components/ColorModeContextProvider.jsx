@@ -13,7 +13,7 @@ export const ColorModeContext = React.createContext({
 export function ColorModeProvider({ children }) {
   const { i18n } = useTranslation();
 
-  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
+  const prefersDark = useMediaQuery('(prefers-color-scheme: light)');
   const isRtl = i18n.language === 'fa';
 
   const [mode, setMode] = React.useState(() => {

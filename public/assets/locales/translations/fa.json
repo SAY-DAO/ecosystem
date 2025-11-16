@@ -399,9 +399,15 @@
   },
   "comparison": {
     "context": {
-      "transactions": "تراکنش‌‌ها",
-      "needs": "نیازها",
+      "transactions": "مجموع تراکنش‌‌ها",
+      "needs": "نیاز",
+      "children": "کودک",
       "virtualFamilies": "عضو"
+    },
+    "context2": {
+      "needs": "مجموع",
+      "virtualFamilies": "ثیت‌نام",
+      "children": "ثیت‌نام"
     },
     "chart": {
       "xAxisLabel": "{{season}} - مقایسه ماهانه {{prevSeason}}",
@@ -412,8 +418,12 @@
       "change": "تغییر"
     },
     "kpi": {
-      "totalInYear": "مجموع {{context}} {{count}} در سال {{season}}",
-      "totalInPrevYear": "مجموع {{context}} {{count}} در سال {{season}}"
+      "totalInYear": "{{context}} {{count}} در سال {{season}}",
+      "totalInPrevYear": "{{context}} {{count}} در سال {{season}}"
+    },
+    "kpi2": {
+      "totalInYear": " {{context2}} {{count}} {{context}} در سال {{season}}",
+      "totalInPrevYear": " {{context2}} {{count}} {{context}} در سال {{season}}"
     }
   }
 }

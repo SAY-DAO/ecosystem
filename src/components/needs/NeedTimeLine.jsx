@@ -179,7 +179,7 @@ function NeedTimeLine() {
         background: isDark && '#0b1220',
       },
 
-      noData: { text: t('chart.noData') },
+      noData: { text: t('analyticFamily.noData') },
       xaxis: {
         categories,
         labels: {

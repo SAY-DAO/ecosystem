@@ -123,7 +123,7 @@ export default function CheckpointLog() {
                         <Typography
                           sx={{
                             fontWeight: 300,
-                            fontSize: 10,
+                            fontSize: 12,
                             minWidth: 0,
                             maxWidth: '100%',
                           }}
@@ -149,7 +149,7 @@ export default function CheckpointLog() {
                             display: 'block',
                             whiteSpace: 'nowrap',
                             fontWeight: 200,
-                            fontSize: 8,
+                            fontSize: 9,
                           }}
                         >
                           {formatDate(it.checkPointDate || it.checkpointDate)}

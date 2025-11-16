@@ -133,6 +133,7 @@ function NeedLeftPanel({ season, setSeason, options = [] }) {
               data={comparisonData}
               season={season}
               context={t('comparison.context.needs')}
+              context2={t('comparison.context2.needs')}
             />
             <Autocomplete
               id="season-autocomplete-done"

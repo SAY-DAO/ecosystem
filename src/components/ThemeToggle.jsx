@@ -14,7 +14,7 @@ export default function ThemeToggle() {
   const isDark = theme.palette.mode === 'dark';
 
   return (
-    <Tooltip title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}>
+    <Tooltip title="">
       <IconButton
         onClick={colorMode.toggleColorMode}
         color="inherit"
