@@ -399,12 +399,18 @@
   },
   "comparison": {
     "context": {
-      "transactions": "Transactions",
+      "transactions": "Total transactions",
       "needs": "Needs",
+      "children": "Children",
       "virtualFamilies": "Members"
     },
+    "context2": {
+      "needs": "Delivered",
+      "virtualFamilies": "Registered",
+      "children": "Registered"
+    },
     "chart": {
-      "xAxisLabel": "{{season}} - Monthly comparison of {{prevSeason}}",
+      "xAxisLabel": "{{season}} - Monthly comparison with {{prevSeason}}",
       "noData": "No data available"
     },
     "tooltip": {
@@ -412,8 +418,12 @@
       "change": "Change"
     },
     "kpi": {
-      "totalInYear": "Total {{context}} {{count}} in year {{season}}",
-      "totalInPrevYear": "Total {{context}} {{count}} in year {{season}}"
+      "totalInYear": "{{context}} {{count}} in {{season}}",
+      "totalInPrevYear": "{{context}} {{count}} in {{season}}"
+    },
+    "kpi2": {
+      "totalInYear": "{{count}} {{context}} {{context2}} in {{season}}",
+      "totalInPrevYear": "{{count}} {{context}} {{context2}} in {{season}}"
     }
   }
 }
