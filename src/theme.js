@@ -73,7 +73,7 @@ const basePalette = {
 const lightPalette = {
   mode: 'light',
   background: {
-    default: '#f6f8fb',
+    default: '#f7f1ec',
     paper: '#ffffff',
   },
   text: {
