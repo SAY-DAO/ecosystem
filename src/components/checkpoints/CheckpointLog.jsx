@@ -214,7 +214,7 @@ export default function CheckpointLog() {
                             target="_blank"
                             rel="noreferrer noopener"
                             underline="hover"
-                            sx={{ display: 'block', textAlign: 'left' }}
+                            sx={{ display: 'block', textAlign: 'right' }}
                           >
                             {it.url}
                           </Link>
