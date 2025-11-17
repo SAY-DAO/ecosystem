@@ -828,7 +828,7 @@ export default function PaymentTable() {
 
   return (
     <TableContainer
-      component={Paper}
+      // component={Paper}
       sx={{
         overflow: 'auto',
         WebkitOverflowScrolling: 'touch',
