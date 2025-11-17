@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable react/prop-types */
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -17,47 +18,32 @@ import { useTranslation } from 'react-i18next';
 
 moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: false });
 
-const farsiMonthMap = {
-  فروردین: 0,
-  اردیبهشت: 1,
-  خرداد: 2,
-  تیر: 3,
-  مرداد: 4,
-  شهریور: 5,
-  مهر: 6,
-  آبان: 7,
-  آذر: 8,
-  دی: 9,
-  بهمن: 10,
-  اسفند: 11,
+const persianMonths = {
+  فروردین: 'Farvardin',
+  اردیبهشت: 'Ordibehesht',
+  خرداد: 'Khordad',
+  تیر: 'Tir',
+  مرداد: 'Mordad',
+  شهریور: 'Shahrivar',
+  مهر: 'Mehr',
+  آبان: 'Aban',
+  آذر: 'Azar',
+  دی: 'Dey',
+  بهمن: 'Bahman',
+  اسفند: 'Esfand',
 };
 
-// english month names (short / long variants that might appear in data)
-const englishMonthMap = {
-  January: 0,
-  Jan: 0,
-  February: 1,
-  Feb: 1,
-  March: 2,
-  Mar: 2,
-  April: 3,
-  Apr: 3,
-  May: 4,
-  June: 5,
-  Jun: 5,
-  July: 6,
-  Jul: 6,
-  August: 7,
-  Aug: 7,
-  September: 8,
-  Sep: 8,
-  October: 9,
-  Oct: 9,
-  November: 10,
-  Nov: 10,
-  December: 11,
-  Dec: 11,
-};
+function convertMonth(obj) {
+  // create a shallow copy so we don't mutate the original
+  const result = { ...obj };
+
+  // check if the "period" exists in our mapping
+  if (persianMonths.hasOwnProperty(result.period)) {
+    result.period = persianMonths[result.period];
+  }
+
+  return result;
+}
 
 function CustomTooltip({ active, payload, label, season }) {
   const { t } = useTranslation();
@@ -214,37 +200,20 @@ export default function Comparison({
   context,
   context2,
 }) {
-  const { i18n } = useTranslation(); // <-- requested: use this for locale-sensitive behaviour
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
+  const isRtl = i18n.language === 'fa';
   const reduxData = useSelector(reduxSelector);
 
   const raw = useMemo(() => {
-    if (Array.isArray(propData) && propData.length) return propData;
+    if (Array.isArray(propData) && propData.length)
+      return isRtl ? propData : propData.map(convertMonth);
     if (Array.isArray(reduxData) && reduxData.length) return reduxData;
     return [];
-  }, [propData, reduxData]);
+  }, [propData, reduxData, isRtl]);
 
   const data = useMemo(() => {
-    const currentJalaliYear = moment().jYear();
-    const currentJalaliMonth = moment().jMonth();
-    const seasonJalaliYear = moment(`${season}-06-01`, 'YYYY-MM-DD').jYear();
     const normalized = normalizeRateData(raw);
-
-    // choose month lookup map depending on locale
-    const localeIsFa =
-      i18n &&
-      typeof i18n.language === 'string' &&
-      i18n.language.startsWith('fa');
-    const monthMap = localeIsFa ? farsiMonthMap : englishMonthMap;
-
-    if (seasonJalaliYear === currentJalaliYear) {
-      return normalized.filter((entry) => {
-        const monthName = entry.period?.trim();
-        const monthIndex = monthMap[monthName];
-        return monthIndex != null && monthIndex <= currentJalaliMonth;
-      });
-    }
     return normalized;
   }, [raw, season, i18n]);
 
@@ -252,7 +221,6 @@ export default function Comparison({
   const yDomain = useMemo(() => computeYDomainForCounts(data), [data]);
 
   const hasData = data.some((d) => d.previous !== 0 || d.current !== 0);
-  const isRtl = i18n.language === 'fa';
 
   const renderColorfulLegendText = (value, entry) => {
     const { color } = entry;

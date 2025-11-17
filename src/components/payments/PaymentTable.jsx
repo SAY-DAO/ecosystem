@@ -23,7 +23,6 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Paper,
   Typography,
   Collapse,
   CardMedia,
@@ -33,7 +32,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { visuallyHidden } from '@mui/utils';
-import { dateConvertor, numberConvertor } from '../../utils/persianToEnglish';
+import {
+  dateCleaner,
+  dateConvertor,
+  numberConvertor,
+} from '../../utils/persianToEnglish';
 import { fetchTransactions } from '../../features/reportSlice';
 import {
   NeedTypeEnum,
@@ -643,7 +646,11 @@ export default function PaymentTable() {
                         scope="row"
                         sx={{ fontSize: 12 }}
                       >
-                        {row.created ? dateConvertor(row.created) : '-'}
+                        {row.created
+                          ? isRtl
+                            ? dateConvertor(row.created)
+                            : dateCleaner(row.created)
+                          : '-'}
                       </TableCell>
                       <TableCell> - </TableCell>
                     </TableRow>
@@ -660,7 +667,11 @@ export default function PaymentTable() {
                         scope="row"
                         sx={{ fontSize: 12 }}
                       >
-                        {row.confirmDate ? dateConvertor(row.confirmDate) : '-'}
+                        {row.confirmDate
+                          ? isRtl
+                            ? dateConvertor(row.confirmDate)
+                            : dateCleaner(row.confirmDate)
+                          : '-'}
                       </TableCell>
                       <TableCell>-</TableCell>
                     </TableRow>
@@ -687,7 +698,11 @@ export default function PaymentTable() {
                         scope="row"
                         sx={{ fontSize: 12 }}
                       >
-                        {row.doneAt ? dateConvertor(row.doneAt) : '-'}
+                        {row.doneAt
+                          ? isRtl
+                            ? dateConvertor(row.doneAt)
+                            : dateCleaner(row.doneAt)
+                          : '-'}
                       </TableCell>
                       <TableCell sx={{ fontSize: 12 }}>
                         {row.p && row.p[0] && <PayerTooltip row={row} />}
@@ -710,10 +725,14 @@ export default function PaymentTable() {
                         sx={{ fontSize: 12 }}
                       >
                         {row.type === NeedTypeEnum.PRODUCT && row.purchase_date
-                          ? dateConvertor(row.purchase_date)
+                          ? isRtl
+                            ? dateConvertor(row.purchase_date)
+                            : dateCleaner(row.purchase_date)
                           : row.type === NeedTypeEnum.SERVICE &&
                               row.ngo_delivery_date
-                            ? dateConvertor(row.ngo_delivery_date)
+                            ? isRtl
+                              ? dateConvertor(row.ngo_delivery_date)
+                              : dateCleaner(row.ngo_delivery_date)
                             : '-'}
                       </TableCell>
                       <TableCell sx={{ fontSize: 12 }}>
@@ -745,16 +764,22 @@ export default function PaymentTable() {
                       >
                         {row.type === NeedTypeEnum.PRODUCT &&
                         row.ngo_delivery_date
-                          ? dateConvertor(row.ngo_delivery_date)
+                          ? isRtl
+                            ? dateConvertor(row.ngo_delivery_date)
+                            : dateCleaner(row.ngo_delivery_date)
                           : row.type === NeedTypeEnum.SERVICE &&
                               row.child_delivery_date
-                            ? dateConvertor(row.child_delivery_date)
+                            ? isRtl
+                              ? dateConvertor(row.child_delivery_date)
+                              : dateCleaner(row.child_delivery_date)
                             : '-'}
                         <Typography sx={{ fontSize: 8, color: 'grey' }}>
                           {row.type === NeedTypeEnum.PRODUCT &&
                             !row.ngo_delivery_date &&
                             row.expected_delivery_date &&
-                            dateConvertor(row.expected_delivery_date)}
+                            (isRtl
+                              ? dateConvertor(row.expected_delivery_date)
+                              : dateCleaner(row.expected_delivery_date))}
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -774,7 +799,9 @@ export default function PaymentTable() {
                           sx={{ fontSize: 12 }}
                         >
                           {row.child_delivery_date
-                            ? dateConvertor(row.child_delivery_date)
+                            ? isRtl
+                              ? dateConvertor(row.child_delivery_date)
+                              : dateCleaner(row.child_delivery_date)
                             : '-'}
                         </TableCell>
                       </TableRow>

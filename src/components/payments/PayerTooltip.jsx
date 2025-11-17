@@ -12,7 +12,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { useTranslation } from 'react-i18next';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { dateConvertor } from '../../utils/persianToEnglish';
+import { dateCleaner, dateConvertor } from '../../utils/persianToEnglish';
 
 // Simple number formatter
 const formatNumber = (value) => {
@@ -21,10 +21,12 @@ const formatNumber = (value) => {
 };
 
 export default function PayerTooltip({ row = { p: [] } }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const payers = Array.isArray(row?.p) ? row.p : [];
   const [open, setOpen] = useState(false);
   const triggerRef = useRef(null);
+
+  const isRtl = i18n.language === 'fa';
 
   const handleToggle = (event) => {
     // prevent parent row clicks if needed
@@ -100,7 +102,7 @@ export default function PayerTooltip({ row = { p: [] } }) {
   const countNeeds = verifiedDisplay.filter(
     (u) => Number(u.need_amount) > 0,
   ).length;
-console.log(verifiedDisplay);
+  console.log(verifiedDisplay);
 
   const tooltipContent = (
     <Box sx={{ p: 1 }}>
@@ -146,7 +148,7 @@ console.log(verifiedDisplay);
                             }
                             variant="outlined"
                             color="success"
-                            sx={{ height: 26 }}
+                            sx={{ height: 26, m: 1 }}
                           />
                         ) : null}
                       </Typography>
@@ -154,7 +156,9 @@ console.log(verifiedDisplay);
                         variant="caption"
                         sx={{ mr: 0.5, display: 'flex', alignItems: 'center' }}
                       >
-                        {dateConvertor(u.payCreated)}
+                        {isRtl
+                          ? dateConvertor(u.payCreated)
+                          : dateCleaner(u.payCreated)}
                       </Typography>
                     </Stack>
 

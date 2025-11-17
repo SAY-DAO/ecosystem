@@ -11,6 +11,13 @@ export function dateConvertor(string) {
   }).format(d);
 }
 
+export function dateCleaner(string) {
+  const date = new Date(string);
+  const weekday = date.toLocaleDateString('en-US', { weekday: 'long' });
+  const cleanDate = date.toISOString().split('T')[0];
+  return `${weekday}, ${cleanDate}`;
+}
+
 export function dateTimeConvertor(string) {
   const d = new Date(string);
   return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {

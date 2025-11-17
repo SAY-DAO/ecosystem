@@ -15,7 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Grid from '@mui/material/Grid';
-import { dateConvertor } from '../../utils/persianToEnglish';
+import { dateCleaner, dateConvertor } from '../../utils/persianToEnglish';
 import { fetchCheckpoints } from '../../features/reportSlice';
 
 export default function CheckpointLog() {
@@ -37,7 +37,9 @@ export default function CheckpointLog() {
   function formatDate(val) {
     if (!val) return '';
     try {
-      return dateConvertor(new Date(val).toLocaleString());
+      return isRtl
+        ? dateConvertor(new Date(val).toLocaleString())
+        : dateCleaner(new Date(val).toLocaleString());
     } catch {
       return val;
     }
@@ -50,6 +52,7 @@ export default function CheckpointLog() {
   return (
     <Box
       sx={{
+        direction: isRtl && 'ltr',
         mb: 10,
         textAlign: 'initial',
         width: '100%',
@@ -116,7 +119,7 @@ export default function CheckpointLog() {
                       wrap="nowrap"
                       alignItems="center"
                       spacing={1}
-                      sx={{ gap: 1 }}
+                      sx={{ gap: 1, textAlign: !isRtl && 'initial' }}
                     >
                       {/* Title (truncates) */}
                       <Grid item xs sx={{ minWidth: 0, overflow: 'hidden' }}>
