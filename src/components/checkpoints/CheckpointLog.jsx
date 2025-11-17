@@ -191,7 +191,9 @@ export default function CheckpointLog() {
 
                     {/* Collapsible details (description + url) */}
                     <Collapse in={openId === id} timeout="auto" unmountOnExit>
-                      <Box sx={{ mt: 1, pr: 1 }}>
+                      <Box
+                        sx={{ mt: 1, pr: 1, textAlign: !isRtl && 'initial' }}
+                      >
                         {it.description && (
                           <Typography
                             variant="subtitle2"
@@ -200,7 +202,6 @@ export default function CheckpointLog() {
                               mb: it.url ? 1 : 0,
                               color: 'text.secondary',
                               fontSize: 12,
-                              textAlign: !isRtl && 'initial',
                             }}
                           >
                             {isRtl ? it.description.fa : it.description.en}
@@ -213,9 +214,6 @@ export default function CheckpointLog() {
                             target="_blank"
                             rel="noreferrer noopener"
                             underline="hover"
-                            sx={{
-                              textAlign: !isRtl && 'initial',
-                            }}
                           >
                             {it.url}
                           </Link>
