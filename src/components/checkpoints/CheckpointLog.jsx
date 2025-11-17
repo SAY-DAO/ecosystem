@@ -200,6 +200,7 @@ export default function CheckpointLog() {
                               mb: it.url ? 1 : 0,
                               color: 'text.secondary',
                               fontSize: 12,
+                              textAlign: !isRtl && 'initial',
                             }}
                           >
                             {isRtl ? it.description.fa : it.description.en}
