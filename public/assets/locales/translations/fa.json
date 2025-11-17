@@ -398,6 +398,9 @@
     }
   },
   "comparison": {
+    "autocomplete": {
+      "label": "انتخاب سال"
+    },
     "context": {
       "transactions": "مجموع تراکنش‌‌ها",
       "needs": "نیاز",

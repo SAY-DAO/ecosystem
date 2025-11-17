@@ -178,7 +178,11 @@ function PaymentLeftPanel({ season, setSeason, options = [] }) {
                   {...params}
                   variant="outlined"
                   size="small"
-                  label={season ? ` ${season}  - ${season - 1}` : 'انتخاب سال'}
+                  label={
+                    season
+                      ? ` ${season}  - ${season - 1}`
+                      : t('comparison.autocomplete.label')
+                  }
                 />
               )}
               sx={{ mb: 2 }}

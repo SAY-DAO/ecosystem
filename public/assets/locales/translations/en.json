@@ -398,6 +398,9 @@
     }
   },
   "comparison": {
+    "autocomplete": {
+      "label": "Choose a persian year"
+    },
     "context": {
       "transactions": "Total transactions",
       "needs": "Needs",
