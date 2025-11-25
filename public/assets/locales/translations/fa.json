@@ -427,6 +427,10 @@
     "kpi2": {
       "totalInYear": " {{context2}} {{count}} {{context}} در سال {{season}}",
       "totalInPrevYear": " {{context2}} {{count}} {{context}} در سال {{season}}"
+    },
+    "kpi3": {
+      "totalInYear": " {{context2}} {{context}} {{count}}  تا {{monthString}} {{season}}",
+      "totalInPrevYear": " {{context2}} {{context}} {{count}} تا {{monthString}} {{season}}"
     }
   }
 }

@@ -427,6 +427,10 @@
     "kpi2": {
       "totalInYear": "{{count}} {{context}} {{context2}} in {{season}}",
       "totalInPrevYear": "{{count}} {{context}} {{context2}} in {{season}}"
+    },
+    "kpi3": {
+      "totalInYear": " {{context2}} {{context}} {{count}} up to {{monthString}} {{season}}",
+      "totalInPrevYear": " {{context2}} {{context}} {{count}} up to {{monthString}} {{season}}"
     }
   }
 }

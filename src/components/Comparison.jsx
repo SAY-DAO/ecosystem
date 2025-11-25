@@ -1,6 +1,6 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable react/prop-types */
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   ResponsiveContainer,
@@ -202,6 +202,7 @@ export default function Comparison({
 }) {
   const { t, i18n } = useTranslation();
 
+  const [thisYearContext, setThisYearContext] = useState();
   const isRtl = i18n.language === 'fa';
   const reduxData = useSelector(reduxSelector);
 
@@ -231,6 +232,14 @@ export default function Comparison({
     );
   };
 
+  useEffect(() => {
+    if (data && data.length > 1 && data.length < 12) {
+      setThisYearContext(data[data.length - 1].period);
+    } else {
+      setThisYearContext();
+    }
+  }, [data]);
+
   return (
     <div
       style={{
@@ -257,32 +266,48 @@ export default function Comparison({
                 : 0}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            {context2
-              ? t('comparison.kpi2.totalInYear', {
+            {!thisYearContext
+              ? context2
+                ? t('comparison.kpi2.totalInYear', {
+                    count: seasonKPI.currTotal.toLocaleString(),
+                    season,
+                    context,
+                    context2,
+                  })
+                : t('comparison.kpi.totalInYear', {
+                    count: seasonKPI.currTotal.toLocaleString(),
+                    season,
+                    context,
+                  })
+              : t('comparison.kpi3.totalInYear', {
                   count: seasonKPI.currTotal.toLocaleString(),
                   season,
                   context,
                   context2,
-                })
-              : t('comparison.kpi.totalInYear', {
-                  count: seasonKPI.currTotal.toLocaleString(),
-                  season,
-                  context,
+                  monthString: thisYearContext,
                 })}
           </Typography>
           <br />
           <Typography variant="caption" color="text.secondary">
-            {context2
-              ? t('comparison.kpi2.totalInPrevYear', {
+            {!thisYearContext
+              ? context2
+                ? t('comparison.kpi2.totalInPrevYear', {
+                    count: seasonKPI.prevTotal.toLocaleString(),
+                    season: season - 1,
+                    context,
+                    context2,
+                  })
+                : t('comparison.kpi.totalInPrevYear', {
+                    count: seasonKPI.prevTotal.toLocaleString(),
+                    season: season - 1,
+                    context,
+                  })
+              : t('comparison.kpi3.totalInPrevYear', {
                   count: seasonKPI.prevTotal.toLocaleString(),
                   season: season - 1,
                   context,
                   context2,
-                })
-              : t('comparison.kpi.totalInPrevYear', {
-                  count: seasonKPI.prevTotal.toLocaleString(),
-                  season: season - 1,
-                  context,
+                  monthString: thisYearContext,
                 })}
           </Typography>
         </div>
