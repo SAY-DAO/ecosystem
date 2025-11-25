@@ -174,7 +174,7 @@ function VirtualFamilyLeftPanel({ season, setSeason, options = [] }) {
                   }
                 />
               )}
-              sx={{ mb: 2 }}
+              sx={{ mb: 2, direction: !isRtl && 'ltr' }}
             />
           </CardContent>
         </Card>

@@ -156,7 +156,7 @@ function NeedLeftPanel({ season, setSeason, options = [] }) {
                   }
                 />
               )}
-              sx={{ mb: 2 }}
+              sx={{ mb: 2, direction: !isRtl && 'ltr' }}
               disableClearable={false}
             />
           </CardContent>
