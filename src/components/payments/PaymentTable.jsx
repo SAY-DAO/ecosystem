@@ -500,7 +500,9 @@ export default function PaymentTable() {
                   fontWeight="400"
                 >
                   <br />
-                  {t('need.waitingPurchase')}
+                  {row.type === NeedTypeEnum.PRODUCT
+                    ? t('need.waitingPurchase')
+                    : t('need.waitingNgo')}
                 </Typography>
               ) : (
                 <Typography
@@ -520,7 +522,7 @@ export default function PaymentTable() {
             <Typography sx={{ fontSize: 9 }} fontWeight="400">
               {row.status < PaymentStatusEnum.COMPLETE_PAY && (
                 <>
-                  {t('need.partialPay')}{' '}
+                  {t('need.partialPay')}
                   {`(${Math.round(
                     (row.p
                       .map((p) => Number(p.need_amount))
@@ -559,7 +561,8 @@ export default function PaymentTable() {
           </TableCell>
           <TableCell align="center" sx={{ direction: 'rtl' }}>
             {(credit && credit.toLocaleString()) ||
-              (row.status > PaymentStatusEnum.COMPLETE_PAY ? (
+              (row.type === NeedTypeEnum.PRODUCT &&
+              row.status > PaymentStatusEnum.COMPLETE_PAY ? (
                 payAmount <= theCost ? (
                   '-'
                 ) : (
