@@ -502,7 +502,7 @@ export default function PaymentTable() {
                   <br />
                   {row.type === NeedTypeEnum.PRODUCT
                     ? t('need.waitingPurchase')
-                    : t('need.waitingNgo')}
+                    : t('need.waitingTransfer')}
                 </Typography>
               ) : (
                 <Typography

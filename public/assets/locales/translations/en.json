@@ -108,9 +108,6 @@
       "summary": "Children who have at least one member in their family"
     }
   },
-  "placeholders": {
-    "paragraph1": "This is a sample text to fill space and demonstrate the design structure."
-  },
   "common": {
     "summaryAndMetrics": "Summary and metrics for {{report}}.",
     "dash": "—"
@@ -188,6 +185,7 @@
     "payableNeeds": "Payable needs",
     "waitingNgo": "Waiting for NGO approval",
     "waitingPurchase": "Waiting for purchase ...",
+    "waitingTransfer": "Waiting for transfer to NGO ...",
     "waitingPayment": "Waiting for payment ...",
     "purchaseCost": "Final cost",
     "partialPay": "Partial payment",

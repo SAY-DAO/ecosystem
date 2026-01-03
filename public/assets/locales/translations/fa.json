@@ -108,9 +108,6 @@
       "summary": "کودکانی که حداقل یک عضو در خانواده خود دارند"
     }
   },
-  "placeholders": {
-    "paragraph1": "این یک متن نمونه است برای پر کردن فضا و نمایش ساختار طراحی."
-  },
   "common": {
     "summaryAndMetrics": "خلاصه و شاخص‌ها برای {{report}}.",
     "dash": "—"
@@ -188,6 +185,7 @@
     "payableNeeds": "نیاز قابل پرداخت",
     "waitingNgo": "در انتظار تایید سمن",
     "waitingPurchase": "در انتظار خرید ...",
+    "waitingTransfer": "در انتظار واریز به سمن ...",
     "waitingPayment": "در انتظار پرداخت ...",
     "purchaseCost": "هزینه نهایی نیاز",
     "partialPay": "نیم پرداخت",
