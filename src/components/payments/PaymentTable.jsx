@@ -502,7 +502,9 @@ export default function PaymentTable() {
                   <br />
                   {row.type === NeedTypeEnum.PRODUCT
                     ? t('need.waitingPurchase')
-                    : t('need.waitingTransfer')}
+                    : !row.bank_track_id
+                      ? t('need.waitingTransfer')
+                      : t('need.waitingNgo')}
                 </Typography>
               ) : (
                 <Typography
