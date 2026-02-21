@@ -15,4 +15,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ['react-window'],
   },
+  server: {
+    allowedHosts: [`${process.env.VITE_ALLOWED_HOSTS}`],
+  },
 });
