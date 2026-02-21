@@ -16,6 +16,8 @@ export default defineConfig({
     include: ['react-window'],
   },
   server: {
-    allowedHosts: [`${process.env.VITE_ALLOWED_HOSTS}`],
+    allowedHosts: process.env.VITE_ALLOWED_HOSTS
+      ? process.env.VITE_ALLOWED_HOSTS.split(',')
+      : [''],
   },
 });
